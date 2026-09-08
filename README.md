@@ -4,3 +4,4 @@ CinePlex es un sistema desktop de administración cinematográfica para centrali
 Avances del proyecto: Creacion y Organizacion de Trello y creacion del Proyecto en Java.
 
 Se creo la rama ft/2026187 de Chigui.
+Se creo la rama Develop de Cesar.
