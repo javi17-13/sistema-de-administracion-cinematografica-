@@ -1,20 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package com.cineplex.system;
 
-/**
- *
- * @author informatica
- */
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/cineplex/system/resources/Login.fxml")
+        );
+
+        Scene scene = new Scene(loader.load());
+
+        stage.setTitle("Cineplex");
+        stage.setScene(scene);
+        stage.show();
     }
-    
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
