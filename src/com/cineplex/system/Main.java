@@ -1,20 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package com.cineplex.system;
 
-/**
- *
- * @author informatica
- */
-public class Main {
+import javafx.application.Application;
+import javafx.stage.Stage;
+import com.cineplex.system.utils.SceneManager;
+import com.cineplex.system.utils.SesionPreferencias;
+import com.cineplex.system.utils.Session;
+import com.cineplex.system.utils.ViewFactory;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stagePrincipal) {
+        stagePrincipal.setTitle("CinePlex - Administración Cinematográfica");
+        SceneManager.getInstanciaSceneManager().setStagePrincipal(stagePrincipal);
+
+        ViewFactory viewFactory = new ViewFactory();
+
+        String usuarioRecordado = SesionPreferencias.obtenerUsuarioRecordado();
+        if (usuarioRecordado != null) {
+            //Hay una sesion recordada de una ejecucion anterior: se entra
+            //directo, sin pasar por el Login de nuevo (US-01: "que el
+            //sistema recuerde su sesion activa").
+            Session.setUsuarioActual(usuarioRecordado);
+            viewFactory.viewHome();
+        } else {
+            viewFactory.viewLogin();
+        }
     }
-    
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
