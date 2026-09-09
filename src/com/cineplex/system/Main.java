@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/cineplex/system/resources/Login.fxml")
+                Main.class.getResource("/com/cineplex/system/view/Login.fxml")
         );
 
         Scene scene = new Scene(loader.load());

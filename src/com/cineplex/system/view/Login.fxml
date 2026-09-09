@@ -5,37 +5,57 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.LoginController">
    <children>
-      <VBox layoutX="240.0" layoutY="60.0" prefHeight="380.0" prefWidth="320.0" spacing="15.0">
+      <HBox prefHeight="500.0" prefWidth="800.0">
          <children>
-            <Label text="CINEPLEX" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="32.0" />
-               </font>
-            </Label>
-            <Label text="Sistema de Administración Cinematográfica">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label text="Inicio de sesión">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label text="Usuario" />
-            <TextField fx:id="txtUsuario" promptText="Ingrese su usuario" />
-            <Label text="Contraseña" />
-            <PasswordField fx:id="txtPassword" promptText="Ingrese su contraseña" />
-            <Label text="Tipo de usuario" />
-            <ComboBox fx:id="cmbTipoUsuario" prefWidth="150.0" promptText="Seleccione un tipo de usuario" />
-            <Button fx:id="btnIniciarSesion" maxWidth="113.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="40.0" prefWidth="200.0" text="INICIAR SESIÓN" />
+            <AnchorPane prefHeight="500.0" prefWidth="400.0">
+               <children>
+                  <ImageView fitHeight="500.0" fitWidth="400.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../resources/images/Inicio%20de%20sesion.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="paneLogin" prefHeight="500.0" prefWidth="400.0" styleClass="login-panel">
+               <children>
+                  <VBox prefHeight="380.0" prefWidth="320.0" spacing="15.0" styleClass="login-card" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
+                     <children>
+                        <Label styleClass="cineplex-title" text="CINEPLEX" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="subtitle" text="Sistema de Administración Cinematográfica">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="login-title" text="Inicio de sesión">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="38.0" prefWidth="280.0" styleClass="login-label" text="Usuario" />
+                        <TextField fx:id="txtUsuario" promptText="Ingrese su usuario" styleClass="login-field" />
+                        <Label prefHeight="38.0" prefWidth="280.0" styleClass="login-label" text="Contraseña" />
+                        <PasswordField fx:id="txtPassword" promptText="Ingrese su contraseña" styleClass="login-field" />
+                        <Label styleClass="login-label" text="Tipo de usuario" />
+                        <ComboBox fx:id="cmbTipoUsuario" prefHeight="38.0" prefWidth="280.0" promptText="Seleccione un tipo de usuario" styleClass="login-combo" />
+                        <Button fx:id="btnIniciarSesion" maxWidth="113.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="40.0" prefWidth="280.0" styleClass="login-button" stylesheets="@../style/Login.css" text="INICIAR SESIÓN" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>
