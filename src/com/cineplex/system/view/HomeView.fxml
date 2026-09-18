@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="860.0" stylesheets="@styles/HomeStyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.HomeController">
    <top>
@@ -23,10 +23,20 @@
       </HBox>
    </top>
    <center>
-      <StackPane styleClass="area-central" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="16.0" styleClass="area-central" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="30.0" left="60.0" right="60.0" top="30.0" />
+         </padding>
          <children>
-            <Label styleClass="mensaje-central" text="Sesión iniciada correctamente. Aquí irá la administración de cartelera, salas y boletos." wrapText="true" />
+            <Label styleClass="mensaje-central" text="¿Qué quieres administrar?" />
+            <HBox alignment="CENTER" spacing="16.0">
+               <children>
+                  <Button mnemonicParsing="false" onMouseClicked="#onIrCartelera" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Cartelera" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onIrRegistrarPelicula" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Registrar película" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onIrAdministradores" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Administradores" />
+               </children>
+            </HBox>
          </children>
-      </StackPane>
+      </VBox>
    </center>
 </BorderPane>

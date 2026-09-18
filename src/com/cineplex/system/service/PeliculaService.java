@@ -1,0 +1,59 @@
+package com.cineplex.system.service;
+
+import java.util.List;
+import com.cineplex.system.model.Peliculas;
+import com.cineplex.system.model.ResultadoOperacion;
+import com.cineplex.system.repository.PeliculaRepository;
+
+/**
+ * Logica de negocio de Peliculas. Los controladores nunca llaman al
+ * repositorio directamente: pasan por aqui, para que la pantalla no
+ * tenga que saber nada de SQL ni de excepciones de base de datos.
+ */
+public class PeliculaService {
+
+    private final PeliculaRepository peliculaRepo = new PeliculaRepository();
+
+    public List<Peliculas> obtenerCartelera() {
+        try {
+            return peliculaRepo.leerTodas();
+        } catch (RuntimeException e) {
+            return List.of();
+        }
+    }
+
+    public Peliculas obtenerDetalle(int idPelicula) {
+        try {
+            return peliculaRepo.buscarPorId(idPelicula);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    public ResultadoOperacion registrar(Peliculas pelicula) {
+        try {
+            peliculaRepo.crear(pelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            return ResultadoOperacion.ERROR;
+        }
+    }
+
+    public ResultadoOperacion editar(Peliculas pelicula) {
+        try {
+            peliculaRepo.editar(pelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            return ResultadoOperacion.ERROR;
+        }
+    }
+
+    public ResultadoOperacion eliminar(int idPelicula) {
+        try {
+            peliculaRepo.eliminar(idPelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            return ResultadoOperacion.ERROR;
+        }
+    }
+}

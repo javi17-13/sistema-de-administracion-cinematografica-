@@ -21,6 +21,23 @@ public class HomeController implements Initializable {
     }
 
     @FXML
+    public void onIrCartelera(MouseEvent event) {
+        new ViewFactory().viewCartelera();
+    }
+
+    @FXML
+    public void onIrRegistrarPelicula(MouseEvent event) {
+        //se limpia cualquier edicion anterior para que abra en modo registro
+        RegistrarPeliculaController.prepararRegistro();
+        new ViewFactory().viewRegistrarPelicula();
+    }
+
+    @FXML
+    public void onIrAdministradores(MouseEvent event) {
+        new ViewFactory().viewGestionarAdministradores();
+    }
+
+    @FXML
     public void onCerrarSesion(MouseEvent event) {
         //Cerrar sesion olvida TAMBIEN la sesion recordada: si no se hiciera
         //esto, al volver a abrir la app entraria directo otra vez, como si

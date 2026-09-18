@@ -1,0 +1,154 @@
+/* Estilos compartidos por las pantallas de administracion.
+   Mantiene la misma identidad dorada/oscura de HomeStyles.css. */
+
+.root {
+    -fx-background-color: #0E0E12;
+}
+
+.header {
+    -fx-background-color: #1B1B22;
+    -fx-border-color: #E7B93C;
+    -fx-border-width: 0 0 2 0;
+}
+
+.header-titulo {
+    -fx-text-fill: #E7B93C;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.panel {
+    -fx-background-color: #0E0E12;
+}
+
+.panel-lateral {
+    -fx-background-color: #14141A;
+    -fx-border-color: #2A2A33;
+    -fx-border-width: 0 0 0 1;
+}
+
+.seccion-titulo {
+    -fx-text-fill: #E7B93C;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.etiqueta {
+    -fx-text-fill: #C7C7D1;
+    -fx-font-size: 11px;
+}
+
+.dato-detalle {
+    -fx-text-fill: #E8E8ED;
+    -fx-font-size: 12px;
+}
+
+.texto-tenue {
+    -fx-text-fill: #6C6C78;
+    -fx-font-size: 12px;
+}
+
+.campo {
+    -fx-background-color: #1B1B22;
+    -fx-text-fill: #E8E8ED;
+    -fx-prompt-text-fill: #5A5A66;
+    -fx-border-color: #2F2F3A;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-padding: 6 10;
+}
+.campo:focused {
+    -fx-border-color: #E7B93C;
+}
+
+.combo {
+    -fx-background-color: #1B1B22;
+    -fx-border-color: #2F2F3A;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+.combo .list-cell {
+    -fx-text-fill: #E8E8ED;
+    -fx-background-color: #1B1B22;
+}
+.combo .list-view {
+    -fx-background-color: #1B1B22;
+}
+
+.boton-principal {
+    -fx-background-color: #E7B93C;
+    -fx-text-fill: #1B1B22;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+}
+.boton-principal:hover {
+    -fx-background-color: #F4CC5C;
+}
+
+.boton-secundario {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E7B93C;
+    -fx-border-color: #E7B93C;
+    -fx-border-width: 1.2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 11px;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+}
+.boton-secundario:hover {
+    -fx-background-color: #E7B93C;
+    -fx-text-fill: #1B1B22;
+}
+
+.boton-peligro {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E05656;
+    -fx-border-color: #E05656;
+    -fx-border-width: 1.2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 11px;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+}
+.boton-peligro:hover {
+    -fx-background-color: #E05656;
+    -fx-text-fill: #14141A;
+}
+
+.tabla {
+    -fx-background-color: #14141A;
+    -fx-border-color: #2A2A33;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: #23232C;
+}
+.tabla .column-header {
+    -fx-background-color: #1B1B22;
+}
+.tabla .column-header .label {
+    -fx-text-fill: #E7B93C;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.tabla .table-row-cell {
+    -fx-background-color: #14141A;
+    -fx-text-fill: #E8E8ED;
+}
+.tabla .table-row-cell:odd {
+    -fx-background-color: #17171E;
+}
+.tabla .table-row-cell:selected {
+    -fx-background-color: #3A3122;
+}
+.tabla .table-cell {
+    -fx-text-fill: #E8E8ED;
+}
+.tabla .placeholder .label {
+    -fx-text-fill: #6C6C78;
+}

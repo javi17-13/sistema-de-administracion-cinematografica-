@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="560.0" prefWidth="720.0" stylesheets="@styles/AdminStyles.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.cineplex.system.controller.RegistrarPeliculaController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="12.0" styleClass="header">
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+            <children>
+                <Label fx:id="lblTituloPantalla" styleClass="header-titulo" text="REGISTRAR PELÍCULA" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" onMouseClicked="#onVolver" styleClass="boton-secundario" text="Volver" />
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="14.0" styleClass="panel" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="24.0" left="40.0" right="40.0" top="24.0" />
+            </padding>
+            <children>
+                <Label styleClass="texto-tenue" text="Completa los datos de la película. Todos los campos son obligatorios menos el póster." wrapText="true" />
+
+                <VBox spacing="4.0">
+                    <children>
+                        <Label styleClass="etiqueta" text="TÍTULO" />
+                        <TextField fx:id="txtTitulo" promptText="Nombre de la película" styleClass="campo" />
+                    </children>
+                </VBox>
+
+                <HBox spacing="18.0">
+                    <children>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="etiqueta" text="GÉNERO" />
+                                <ComboBox fx:id="cmbGenero" maxWidth="Infinity" styleClass="combo" />
+                            </children>
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="etiqueta" text="CATEGORÍA" />
+                                <ComboBox fx:id="cmbCategoria" maxWidth="Infinity" styleClass="combo" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox spacing="18.0">
+                    <children>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="etiqueta" text="DURACIÓN (MINUTOS)" />
+                                <TextField fx:id="txtDuracion" promptText="Ej. 120" styleClass="campo" />
+                            </children>
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="etiqueta" text="DIRECTOR" />
+                                <TextField fx:id="txtDirector" promptText="Nombre del director" styleClass="campo" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <VBox spacing="4.0">
+                    <children>
+                        <Label styleClass="etiqueta" text="PÓSTER (URL, OPCIONAL)" />
+                        <TextField fx:id="txtPoster" promptText="https://..." styleClass="campo" />
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                    <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#onLimpiar" styleClass="boton-secundario" text="Limpiar" />
+                        <Button fx:id="btnGuardar" mnemonicParsing="false" onMouseClicked="#onGuardar" styleClass="boton-principal" text="Registrar película" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
