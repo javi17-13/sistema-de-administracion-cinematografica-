@@ -10,8 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import com.cineplex.system.service.AuthService;
 import com.cineplex.system.utils.AlertInformation;
-import com.cineplex.system.utils.SesionPreferencias;
 import com.cineplex.system.utils.Session;
+import com.cineplex.system.utils.SesionPreferencias;
 import com.cineplex.system.utils.ViewFactory;
 
 public class LoginController implements Initializable {
@@ -24,15 +24,14 @@ public class LoginController implements Initializable {
     private CheckBox chkRecordarSesion;
 
     private AlertInformation alertInfo = new AlertInformation();
-    
+
     private final AuthService authService = new AuthService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Si ya habia una sesion recordada de una vez anterior, dejamos el
-        //campo de usuario precargado para que sea mas rapido volver a entrar
+        //si la ultima vez marcaron "Recordarme", se precarga el usuario
         String usuarioRecordado = SesionPreferencias.obtenerUsuarioRecordado();
-        if (usuarioRecordado != null) {
+        if (!usuarioRecordado.isEmpty()) {
             txtUsuario.setText(usuarioRecordado);
             chkRecordarSesion.setSelected(true);
         }

@@ -38,15 +38,15 @@
          </VBox.margin>
       </VBox>
 
-      <CheckBox fx:id="chkRecordarSesion" styleClass="checkbox-recordar" text="Recordar sesión en este equipo">
+      <CheckBox fx:id="chkRecordarSesion" mnemonicParsing="false" styleClass="campo-label" text="Recordarme">
          <VBox.margin>
-            <Insets top="14.0" />
+            <Insets top="10.0" />
          </VBox.margin>
       </CheckBox>
 
       <Button fx:id="btnIngresar" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#onIngresar" styleClass="boton-ingresar" text="INGRESAR">
          <VBox.margin>
-            <Insets top="18.0" />
+            <Insets top="14.0" />
          </VBox.margin>
       </Button>
 

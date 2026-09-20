@@ -3,36 +3,31 @@ package com.cineplex.system.utils;
 import java.util.prefs.Preferences;
 
 /**
- * Recuerda quien inicio sesion INCLUSO despues de cerrar y volver a abrir
- * la aplicacion, sin depender de una base de datos. Usa la API de
- * Preferences de Java: un almacen de configuracion clave-valor que el
- * propio sistema operativo administra por nosotros (en Windows vive en
- * el registro, dentro de HKEY_CURRENT_USER; en Linux/Mac en un archivo de
- * configuracion del usuario). Es exactamente para esto para lo que existe:
- * "recordar" datos pequeños entre ejecuciones sin montar una BD.
+ * Recuerda el usuario del ultimo login exitoso, guardado localmente en
+ * esta computadora (java.util.prefs.Preferences -- en Windows vive en
+ * el Registro, bajo el nodo de esta clase). NO tiene nada que ver con
+ * la sesion de la aplicacion en si (eso lo maneja Session): esto es
+ * solo para poder mostrar el usuario ya escrito la proxima vez que se
+ * abra el programa, si el Administrador marco "Recordarme".
  */
 public class SesionPreferencias {
 
-    private static final Preferences PREFS = Preferences.userNodeForPackage(SesionPreferencias.class);
-    private static final String CLAVE_USUARIO_RECORDADO = "usuarioRecordado";
+    private static final String CLAVE_USUARIO = "ultimoUsuario";
+    private static final Preferences PREFERENCIAS = Preferences.userNodeForPackage(SesionPreferencias.class);
 
     private SesionPreferencias() {
     }
 
     public static void recordarUsuario(String usuario) {
-        PREFS.put(CLAVE_USUARIO_RECORDADO, usuario);
-    }
-
-    public static String obtenerUsuarioRecordado() {
-        //el segundo parametro es el valor por defecto si la clave no existe todavia
-        return PREFS.get(CLAVE_USUARIO_RECORDADO, null);
-    }
-
-    public static boolean haySesionRecordada() {
-        return obtenerUsuarioRecordado() != null;
+        PREFERENCIAS.put(CLAVE_USUARIO, usuario);
     }
 
     public static void olvidarUsuario() {
-        PREFS.remove(CLAVE_USUARIO_RECORDADO);
+        PREFERENCIAS.remove(CLAVE_USUARIO);
+    }
+
+    /** Devuelve el usuario recordado, o cadena vacia si no hay ninguno guardado. */
+    public static String obtenerUsuarioRecordado() {
+        return PREFERENCIAS.get(CLAVE_USUARIO, "");
     }
 }
