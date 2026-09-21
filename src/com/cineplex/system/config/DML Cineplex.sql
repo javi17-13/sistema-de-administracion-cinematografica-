@@ -1,4 +1,4 @@
-USE Cineplex_IN4AV;
+    USE Cineplex_IN4AV;
 
 #USUARIOS
 
@@ -128,7 +128,10 @@ DELIMITER ;
 
 #USUARIOS
 
-CALL sp_Crear_Usuarios();
+CALL sp_Crear_Usuarios('Prueba', 'admin', '1234', 'Administrador');
+CALL sp_Crear_Usuarios('Gerente Prueba', 'gerente', '1234', 'Gerente');
+CALL sp_Crear_Usuarios('Cine Prueba', 'cine', '1234', 'Administrador de Cine');
+SELECT * FROM Usuarios;
 CALL sp_Leer_Usuarios();
 CALL sp_Editar_Usuarios();
 CALL sp_Eliminar_Usuarios();
@@ -138,7 +141,7 @@ CALL sp_Buscar_Usuarios();
 
 CALL sp_Crear_Peliculas();
 CALL sp_Leer_Peliculas();
-CALL sp_Editar_Peliculas();
+CALL sp_Editar_Peliculas();	
 CALL sp_Eliminar_Peliculas();
 CALL sp_Buscar_Peliculas();
 
