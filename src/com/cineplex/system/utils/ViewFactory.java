@@ -18,9 +18,12 @@ public class ViewFactory {
         Scene scene;
 
         switch (vista) {
-            case "login" -> scene = loadFileFXML("LoginView.fxml", 420, 520);
-            case "home" -> scene = loadFileFXML("HomeView.fxml", 860, 540);
-            default -> scene = loadFileFXML("LoginView.fxml", 420, 520);
+            case "login" ->
+                scene = loadFileFXML("Login.fxml", 800, 500);
+            case "home" ->
+                scene = loadFileFXML("HomeView.fxml", 860, 540);
+            default ->
+                scene = loadFileFXML("Login.fxml", 420, 520);
         }
 
         SceneManager.getInstanciaSceneManager().changeScene(scene);
