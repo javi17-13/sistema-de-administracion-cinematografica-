@@ -1,24 +1,19 @@
 package com.cineplex.system;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.cineplex.system.utils.SceneManager;
+import com.cineplex.system.utils.ViewFactory;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stagePrincipal) {
+        stagePrincipal.setTitle("CinePlex - Administración Cinematográfica");
+        SceneManager.getInstanciaSceneManager().setStagePrincipal(stagePrincipal);
 
-        FXMLLoader loader = new FXMLLoader(
-                Main.class.getResource("/com/cineplex/system/view/Login.fxml")
-        );
-
-        Scene scene = new Scene(loader.load());
-
-        stage.setTitle("Cineplex");
-        stage.setScene(scene);
-        stage.show();
+        ViewFactory viewFactory = new ViewFactory();
+        viewFactory.viewLogin();
     }
 
     public static void main(String[] args) {

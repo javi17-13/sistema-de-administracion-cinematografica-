@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="860.0" stylesheets="@styles/HomeStyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.HomeController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="12.0" styleClass="header">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <children>
+            <Label styleClass="header-titulo" text="CINEPLEX" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblUsuario" styleClass="header-usuario" text="Administrador: -" />
+            <Button mnemonicParsing="false" onMouseClicked="#onCerrarSesion" styleClass="boton-cerrar-sesion" text="Cerrar sesión" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <StackPane styleClass="area-central" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="mensaje-central" text="Sesión iniciada correctamente. Aquí irá la administración de cartelera, salas y boletos." wrapText="true" />
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
