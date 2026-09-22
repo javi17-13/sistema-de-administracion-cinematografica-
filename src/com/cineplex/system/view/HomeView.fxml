@@ -34,6 +34,7 @@
                   <Button mnemonicParsing="false" onMouseClicked="#onIrCartelera" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Cartelera" />
                   <Button mnemonicParsing="false" onMouseClicked="#onIrRegistrarPelicula" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Registrar película" />
                   <Button mnemonicParsing="false" onMouseClicked="#onIrAdministradores" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Administradores" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onIrCompraBoletos" prefWidth="200.0" styleClass="boton-cerrar-sesion" text="Compra de boletos" />
                </children>
             </HBox>
          </children>

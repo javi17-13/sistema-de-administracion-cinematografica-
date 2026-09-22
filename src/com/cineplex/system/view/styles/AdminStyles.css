@@ -152,3 +152,42 @@
 .tabla .placeholder .label {
     -fx-text-fill: #6C6C78;
 }
+
+/* ---------- Compra de boletos: mapa de asientos ---------- */
+
+.asiento-libre {
+    -fx-background-color: #1B3A2A;
+    -fx-text-fill: #6FCB8F;
+    -fx-border-color: #2E5B41;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 10px;
+    -fx-cursor: hand;
+}
+.asiento-libre:hover {
+    -fx-background-color: #234A34;
+}
+
+.asiento-ocupado {
+    -fx-background-color: #3A1B1E;
+    -fx-text-fill: #7A4045;
+    -fx-border-color: #542125;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 10px;
+    -fx-opacity: 0.75;
+}
+
+.asiento-seleccionado {
+    -fx-background-color: #E7B93C;
+    -fx-text-fill: #1B1B22;
+    -fx-border-color: #F4CC5C;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}

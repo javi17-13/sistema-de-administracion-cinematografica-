@@ -37,6 +37,11 @@ public class HomeController implements Initializable {
     }
 
     @FXML
+    public void onIrCompraBoletos(MouseEvent event) {
+        new ViewFactory().viewCompraBoletos();
+    }
+
+    @FXML
     public void onCerrarSesion(MouseEvent event) {
         Session.cerrarSesion();
 
