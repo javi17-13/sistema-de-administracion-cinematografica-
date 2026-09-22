@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="38.0" layoutY="27.0" prefHeight="17.0" prefWidth="305.0" text="Gestión de Películas" />
+      <Label layoutX="64.0" layoutY="94.0" text="Título:" />
+      <TextField fx:id="txtTitulo" layoutX="38.0" layoutY="111.0" />
+      <Label layoutX="38.0" layoutY="154.0" text="Género:" />
+      <ComboBox fx:id="cmbGenero" layoutX="28.0" layoutY="171.0" prefWidth="150.0" />
+      <Label layoutX="28.0" layoutY="208.0" text="Categoría:" />
+      <ComboBox fx:id="cmbCategoria" layoutX="22.0" layoutY="225.0" prefWidth="150.0" />
+      <Label layoutX="28.0" layoutY="272.0" text="Director" />
+      <TextField fx:id="txtDirector" layoutX="23.0" layoutY="300.0" />
+      <Label text="Label" />
+      <Label layoutX="24.0" layoutY="340.0" text="Label" />
+   </children>
+</AnchorPane>
