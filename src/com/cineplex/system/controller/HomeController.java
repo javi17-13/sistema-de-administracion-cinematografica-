@@ -20,6 +20,28 @@ public class HomeController implements Initializable {
     }
 
     @FXML
+    public void onIrCartelera(MouseEvent event) {
+        new ViewFactory().viewCartelera();
+    }
+
+    @FXML
+    public void onIrRegistrarPelicula(MouseEvent event) {
+        //se limpia cualquier edicion anterior para que abra en modo registro
+        RegistrarPeliculaController.prepararRegistro();
+        new ViewFactory().viewRegistrarPelicula();
+    }
+
+    @FXML
+    public void onIrAdministradores(MouseEvent event) {
+        new ViewFactory().viewGestionarAdministradores();
+    }
+
+    @FXML
+    public void onIrCompraBoletos(MouseEvent event) {
+        new ViewFactory().viewCompraBoletos();
+    }
+
+    @FXML
     public void onCerrarSesion(MouseEvent event) {
         Session.cerrarSesion();
 

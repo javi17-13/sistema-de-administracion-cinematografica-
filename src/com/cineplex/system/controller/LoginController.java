@@ -1,14 +1,13 @@
 package com.cineplex.system.controller;
 
-import com.cineplex.system.model.Usuario;
-import com.cineplex.system.repository.UsuarioRepository;
-import com.cineplex.system.utils.AlertInformation;
-import com.cineplex.system.utils.Session;
-import com.cineplex.system.utils.ViewFactory;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -16,15 +15,23 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import com.cineplex.system.model.Usuario;
+import com.cineplex.system.repository.UsuarioRepository;
+import com.cineplex.system.utils.AlertInformation;
+import com.cineplex.system.utils.Session;
+import com.cineplex.system.utils.SesionPreferencias;
+import com.cineplex.system.utils.ViewFactory;
 
-public class LoginController {
+public class LoginController implements Initializable {
 
-    // ---------- Componentes del FXML (deben coincidir con los fx:id de Login.fxml) ----------
     @FXML
     private TextField txtUsuario;
 
     @FXML
     private PasswordField txtPassword;
+
+    @FXML
+    private CheckBox chkRecordarSesion;
 
     @FXML
     private ComboBox<String> cmbTipoUsuario;
@@ -35,24 +42,29 @@ public class LoginController {
     @FXML
     private AnchorPane panelLogin;
 
-    // ---------- Dependencias ----------
     private final UsuarioRepository usuarioRepository = new UsuarioRepository();
     private final AlertInformation alertInfo = new AlertInformation();
 
-    // ---------- Inicialización ----------
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
         cmbTipoUsuario.getItems().addAll(
                 "Gerente",
                 "Administrador",
                 "Administrador de Cine"
         );
 
+        // Si la última vez marcaron "Recordarme", se precarga el usuario
+        String usuarioRecordado = SesionPreferencias.obtenerUsuarioRecordado();
+        if (!usuarioRecordado.isEmpty()) {
+            txtUsuario.setText(usuarioRecordado);
+            chkRecordarSesion.setSelected(true);
+        }
+
         crearBolitas();
     }
 
-    // ---------- Burbujas animadas (de la rama 2026467) ----------
-    // OJO: los valores están copiados de la captura; compáralos con tu código original.
+    // ---------- Burbujas animadas ----------
     private void crearBolitas() {
         crearBolita(45, "#E5A8A8", 80, 100, 40, 60, 4);
         crearBolita(35, "#9B9BB4", 300, 150, -40, -50, 5);
@@ -68,12 +80,9 @@ public class LoginController {
             double segundos) {
 
         Circle bolita = new Circle(radio);
-
         bolita.setFill(Color.web(color, 0.35));
-
         bolita.setLayoutX(x);
         bolita.setLayoutY(y);
-
         panelLogin.getChildren().add(bolita);
 
         TranslateTransition movimiento = new TranslateTransition(
@@ -88,14 +97,13 @@ public class LoginController {
         movimiento.play();
     }
 
-    // ---------- Inicio de sesión (flujo de Gustavo, ahora contra la base de datos) ----------
+    // ---------- Inicio de sesión (contra la base de datos) ----------
     @FXML
     private void iniciarSesion() {
         String usuario = txtUsuario.getText().trim();
         String password = txtPassword.getText().trim();
         String rol = cmbTipoUsuario.getValue();
 
-        // 1. Validar que no falten datos
         if (usuario.isEmpty() || password.isEmpty() || rol == null) {
             alertInfo.viewAlert("WARNING", "CAMPOS INCOMPLETOS", "FALTAN DATOS",
                     "Ingresa tu usuario, tu contraseña y el tipo de usuario.");
@@ -103,7 +111,6 @@ public class LoginController {
         }
 
         try {
-            // 2. Consultar la base de datos
             Usuario usuarioEncontrado = usuarioRepository.login(usuario, password, rol);
 
             if (usuarioEncontrado == null) {
@@ -112,8 +119,13 @@ public class LoginController {
                 return;
             }
 
-            // 3. Guardar la sesión y abrir la pantalla principal
             Session.setUsuarioActual(usuario);
+
+            if (chkRecordarSesion.isSelected()) {
+                SesionPreferencias.recordarUsuario(usuario);
+            } else {
+                SesionPreferencias.olvidarUsuario();
+            }
 
             ViewFactory viewFactory = new ViewFactory();
             viewFactory.viewHome();
