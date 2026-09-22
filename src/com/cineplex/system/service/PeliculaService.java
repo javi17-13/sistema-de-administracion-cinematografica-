@@ -11,77 +11,83 @@ public class PeliculaService {
     public PeliculaService() {
         peliculaRepository = new PeliculaRepository();
     }
-  public String validarDatos(Pelicula pelicula) {
 
-    if (pelicula.getTitulo() == null || pelicula.getTitulo().trim().isEmpty()) {
-        return "El título es obligatorio.";
+    public String validarDatos(Pelicula pelicula) {
+
+        if (pelicula.getTitulo() == null || pelicula.getTitulo().trim().isEmpty()) {
+            return "El título es obligatorio.";
+        }
+
+        if (pelicula.getGenero() == null || pelicula.getGenero().trim().isEmpty()) {
+            return "El género es obligatorio.";
+        }
+
+        if (pelicula.getCategoria() == null || pelicula.getCategoria().trim().isEmpty()) {
+            return "La categoría es obligatoria.";
+        }
+
+        if (pelicula.getDirector() == null || pelicula.getDirector().trim().isEmpty()) {
+            return "El director es obligatorio.";
+        }
+
+        if (pelicula.getPoster() == null || pelicula.getPoster().trim().isEmpty()) {
+            return "El poster es obligatorio.";
+        }
+
+        if (pelicula.getDuracion() <= 0) {
+            return "La duración debe ser mayor que 0.";
+        }
+
+        return null;
     }
 
-    if (pelicula.getGenero() == null || pelicula.getGenero().trim().isEmpty()) {
-        return "El género es obligatorio.";
+    // Antes devolvía boolean. Ahora devuelve el mensaje de error (o null si se guardó bien),
+    // para que el controlador de la pantalla pueda mostrar por qué falló.
+    public String agregar(Pelicula pelicula) {
+
+        String error = validarDatos(pelicula);
+        if (error != null) {
+            return error;
+        }
+
+        if (peliculaRepository.existeTitulo(pelicula.getTitulo())) {
+            return "Ya existe una película con ese título.";
+        }
+
+        return peliculaRepository.agregar(pelicula)
+                ? null
+                : "No se pudo guardar la película. Intenta de nuevo.";
     }
 
-    if (pelicula.getCategoria() == null || pelicula.getCategoria().trim().isEmpty()) {
-        return "La categoría es obligatoria.";
+    public List<Pelicula> listar() {
+        return peliculaRepository.listar();
     }
 
-    if (pelicula.getDirector() == null || pelicula.getDirector().trim().isEmpty()) {
-        return "El director es obligatorio.";
+    // Antes devolvía boolean. Ahora devuelve el mensaje de error (o null si se editó bien).
+    public String editar(Pelicula pelicula) {
+
+        String error = validarDatos(pelicula);
+        if (error != null) {
+            return error;
+        }
+
+        if (peliculaRepository.existeTituloExceptoId(
+                pelicula.getTitulo(),
+                pelicula.getIdPelicula())) {
+            return "Ya existe otra película con ese título.";
+        }
+
+        return peliculaRepository.editar(pelicula)
+                ? null
+                : "No se pudo editar la película. Intenta de nuevo.";
     }
 
-    if (pelicula.getPoster() == null || pelicula.getPoster().trim().isEmpty()) {
-        return "El poster es obligatorio.";
+    public boolean eliminar(int idPelicula) {
+
+        if (idPelicula <= 0) {
+            return false;
+        }
+
+        return peliculaRepository.eliminar(idPelicula);
     }
-
-    if (pelicula.getDuracion() <= 0) {
-        return "La duración debe ser mayor que 0.";
-    }
-
-    return null;
-}
-  
-  public boolean agregar(Pelicula pelicula) {
-
-    if (validarDatos(pelicula) != null) {
-    return false;
-}
-
-    if (peliculaRepository.existeTitulo(pelicula.getTitulo())) {
-        return false;
-    }
-
-    return peliculaRepository.agregar(pelicula);
-}
-  
-  
-  public List<Pelicula> listar() {
-    return peliculaRepository.listar();
-}
-  
-  public boolean editar(Pelicula pelicula) {
-
-    if (validarDatos(pelicula) != null) {
-    return false;
-}
-
-    if (peliculaRepository.existeTituloExceptoId(
-            pelicula.getTitulo(),
-            pelicula.getIdPelicula())) {
-        return false;
-    }
-
-    return peliculaRepository.editar(pelicula);
-}
-  
-  public boolean eliminar(int idPelicula) {
-
-    if (idPelicula <= 0) {
-        return false;
-    }
-
-    return peliculaRepository.eliminar(idPelicula);
-}
-    
-
-    
 }
