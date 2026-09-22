@@ -7,7 +7,26 @@ package com.cineplex.system.model;
  * y el controlador decide que alerta mostrar.
  */
 public enum ResultadoOperacion {
-    EXITO,
-    USUARIO_DUPLICADO,
-    ERROR
+    EXITO("Operación realizada con éxito."),
+    USUARIO_DUPLICADO("El nombre de usuario ya está registrado."),
+    CORREO_DUPLICADO("El correo electrónico ya está registrado."),
+    ASIENTO_OCUPADO("El asiento seleccionado ya fue comprado por otro cliente."),
+    REGISTRO_EN_USO("El registro no se puede eliminar porque tiene datos o funciones asociadas."),
+    DATOS_INVALIDOS("Los datos ingresados no son válidos o están incompletos."),
+    NO_ENCONTRADO("El registro solicitado no fue encontrado."),
+    ERROR("Ocurrió un error inesperado al procesar la operación.");
+
+    private final String mensajeDefault;
+
+    ResultadoOperacion(String mensajeDefault) {
+        this.mensajeDefault = mensajeDefault;
+    }
+
+    public String getMensajeDefault() {
+        return mensajeDefault;
+    }
+
+    public boolean isExito() {
+        return this == EXITO;
+    }
 }

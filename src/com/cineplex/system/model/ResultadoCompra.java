@@ -10,5 +10,22 @@ package com.cineplex.system.model;
 public enum ResultadoCompra {
     EXITO,
     ASIENTO_OCUPADO,
-    ERROR
+    ERROR;
+
+    public static ResultadoCompra desdeOperacion(ResultadoOperacion op) {
+        if (op == null) return ERROR;
+        return switch (op) {
+            case EXITO -> EXITO;
+            case ASIENTO_OCUPADO -> ASIENTO_OCUPADO;
+            default -> ERROR;
+        };
+    }
+
+    public ResultadoOperacion aOperacion() {
+        return switch (this) {
+            case EXITO -> ResultadoOperacion.EXITO;
+            case ASIENTO_OCUPADO -> ResultadoOperacion.ASIENTO_OCUPADO;
+            default -> ResultadoOperacion.ERROR;
+        };
+    }
 }

@@ -1,5 +1,6 @@
 package com.cineplex.system.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import com.cineplex.system.model.Peliculas;
 import com.cineplex.system.model.ResultadoOperacion;
@@ -53,6 +54,9 @@ public class PeliculaService {
             peliculaRepo.eliminar(idPelicula);
             return ResultadoOperacion.EXITO;
         } catch (RuntimeException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                return ResultadoOperacion.REGISTRO_EN_USO;
+            }
             return ResultadoOperacion.ERROR;
         }
     }

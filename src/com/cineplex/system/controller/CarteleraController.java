@@ -199,6 +199,10 @@ public class CarteleraController implements Initializable {
                     "\"" + seleccionada.getTitulo() + "\" se quitó de la cartelera.");
             cargarCartelera();
             mostrarDetalle(null);
+        } else if (resultado == ResultadoOperacion.REGISTRO_EN_USO) {
+            alertInfo.viewAlert("WARNING", "NO SE PUEDE ELIMINAR", "PELÍCULA CON FUNCIONES PROGRAMADAS",
+                    "No se puede eliminar \"" + seleccionada.getTitulo()
+                    + "\" porque tiene funciones o boletos asociados en el sistema.");
         } else {
             alertInfo.viewAlert("ERROR", "NO SE PUDO ELIMINAR", "ERROR AL ELIMINAR",
                     "Ocurrió un error al eliminar la película.");

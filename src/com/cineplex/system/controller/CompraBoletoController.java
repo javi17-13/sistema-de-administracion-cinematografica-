@@ -8,10 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -29,19 +25,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import com.cineplex.system.model.Funciones;
-import com.cineplex.system.model.ResultadoCompra;
+import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.repository.FuncionRepository;
 import com.cineplex.system.service.BoletoService;
 import com.cineplex.system.service.ClienteService;
 import com.cineplex.system.utils.AlertInformation;
+import com.cineplex.system.utils.QRCodeGenerator;
 import com.cineplex.system.utils.ViewFactory;
 
 /**
@@ -132,6 +126,8 @@ public class CompraBoletoController implements Initializable {
 
         cargarTodasLasFunciones();
         mostrarPanelSeleccion();
+
+        txtBuscarPelicula.setOnAction(e -> ejecutarBusqueda());
     }
 
     private void cargarTodasLasFunciones() {
@@ -142,6 +138,10 @@ public class CompraBoletoController implements Initializable {
     /** US-09: busqueda basica por titulo de pelicula. Campo vacio = mostrar todas otra vez. */
     @FXML
     public void onBuscar(MouseEvent event) {
+        ejecutarBusqueda();
+    }
+
+    private void ejecutarBusqueda() {
         String titulo = txtBuscarPelicula.getText();
         if (titulo == null || titulo.isBlank()) {
             cargarTodasLasFunciones();
@@ -240,7 +240,7 @@ public class CompraBoletoController implements Initializable {
             int idCliente = clienteService.crear(nombre, correo);
             String contenidoQR = construirContenidoQR(funcionSeleccionada, nombre, asientoSeleccionado);
 
-            ResultadoCompra resultado = boletoService.comprar(
+            ResultadoOperacion resultado = boletoService.comprar(
                     funcionSeleccionada.getID_Funcion(), idCliente, asientoSeleccionado, contenidoQR);
 
             switch (resultado) {
@@ -251,7 +251,9 @@ public class CompraBoletoController implements Initializable {
                             "Elige otro asiento -- este ya se vendió mientras pagabas.");
                     dibujarMapaAsientos(funcionSeleccionada);
                 }
-                case ERROR -> alertInfo.viewAlert("ERROR", "ERROR", "No se pudo completar la compra",
+                case DATOS_INVALIDOS -> alertInfo.viewAlert("WARNING", "DATOS INVÁLIDOS", "Información incompleta",
+                        "Verifica que la función, el cliente y el asiento sean válidos.");
+                default -> alertInfo.viewAlert("ERROR", "ERROR", "No se pudo completar la compra",
                         "Ocurrió un error al procesar tu compra. Intenta de nuevo.");
             }
         } catch (RuntimeException e) {
@@ -376,7 +378,7 @@ public class CompraBoletoController implements Initializable {
         panelTicket.setVisible(true);
         panelTicket.setManaged(true);
 
-        imgQR.setImage(generarImagenQR(contenidoQR, 220));
+        imgQR.setImage(QRCodeGenerator.generar(contenidoQR, 220));
 
         txtResumenTicket.setText(
                 funcion.getTitulo() + "\n"
@@ -385,30 +387,6 @@ public class CompraBoletoController implements Initializable {
                 + "Cliente: " + nombreCliente + "\n"
                 + "Total pagado: Q" + funcion.getPrecio()
                 + "  (tarjeta terminada en " + tarjeta.ultimos4Digitos() + ")");
-    }
-
-    /**
-     * Genera el QR con ZXing y lo pinta pixel por pixel en un
-     * WritableImage -- asi evitamos pasar por BufferedImage/Swing y
-     * solo se necesita el jar "core" de ZXing, nada de javafx.swing.
-     */
-    private Image generarImagenQR(String contenido, int tamano) {
-        try {
-            QRCodeWriter writer = new QRCodeWriter();
-            BitMatrix matriz = writer.encode(contenido, BarcodeFormat.QR_CODE, tamano, tamano);
-
-            WritableImage imagen = new WritableImage(tamano, tamano);
-            PixelWriter escritor = imagen.getPixelWriter();
-            for (int y = 0; y < tamano; y++) {
-                for (int x = 0; x < tamano; x++) {
-                    escritor.setColor(x, y, matriz.get(x, y) ? Color.BLACK : Color.WHITE);
-                }
-            }
-            return imagen;
-        } catch (WriterException e) {
-            System.out.println("Error al generar el QR: " + e.getMessage());
-            return null;
-        }
     }
 
     @FXML
