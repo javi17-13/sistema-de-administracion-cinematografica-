@@ -3,22 +3,14 @@ package com.cineplex.system.service;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import com.cineplex.system.model.ResultadoOperacion;
-import com.cineplex.system.model.Usuarios;
+import com.cineplex.system.model.Usuario;
 import com.cineplex.system.repository.UsuarioRepository;
 
-/**
- * Logica de negocio de Usuarios (las cuentas de Administrador).
- *
- * La columna Usuario tiene UNIQUE en la tabla, asi que si se intenta
- * repetir un nombre de usuario MySQL rechaza el insert. En vez de dejar
- * reventar esa excepcion hasta la pantalla, aqui se traduce a
- * USUARIO_DUPLICADO para poder mostrar un mensaje claro.
- */
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepo = new UsuarioRepository();
 
-    public List<Usuarios> obtenerTodos() {
+    public List<Usuario> obtenerTodos() {
         try {
             return usuarioRepo.leerTodos();
         } catch (RuntimeException e) {
@@ -26,7 +18,7 @@ public class UsuarioService {
         }
     }
 
-    public ResultadoOperacion crear(Usuarios usuario) {
+    public ResultadoOperacion crear(Usuario usuario) {
         try {
             usuarioRepo.crear(usuario);
             return ResultadoOperacion.EXITO;
@@ -35,7 +27,7 @@ public class UsuarioService {
         }
     }
 
-    public ResultadoOperacion editar(Usuarios usuario) {
+    public ResultadoOperacion editar(Usuario usuario) {
         try {
             usuarioRepo.editar(usuario);
             return ResultadoOperacion.EXITO;
