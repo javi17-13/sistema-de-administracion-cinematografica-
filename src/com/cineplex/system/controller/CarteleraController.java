@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import com.cineplex.system.model.Peliculas;
+import com.cineplex.system.model.Pelicula;
 import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.service.PeliculaService;
 import com.cineplex.system.utils.AlertInformation;
@@ -37,17 +37,17 @@ import com.cineplex.system.utils.ViewFactory;
 public class CarteleraController implements Initializable {
 
     @FXML
-    private TableView<Peliculas> tablaPeliculas;
+    private TableView<Pelicula> tablaPeliculas;
     @FXML
-    private TableColumn<Peliculas, String> colTitulo;
+    private TableColumn<Pelicula, String> colTitulo;
     @FXML
-    private TableColumn<Peliculas, String> colGenero;
+    private TableColumn<Pelicula, String> colGenero;
     @FXML
-    private TableColumn<Peliculas, String> colDuracion;
+    private TableColumn<Pelicula, String> colDuracion;
     @FXML
-    private TableColumn<Peliculas, String> colCategoria;
+    private TableColumn<Pelicula, String> colCategoria;
     @FXML
-    private TableColumn<Peliculas, String> colDirector;
+    private TableColumn<Pelicula, String> colDirector;
     @FXML
     private TextField txtBuscar;
 
@@ -74,7 +74,7 @@ public class CarteleraController implements Initializable {
     private final AlertInformation alertInfo = new AlertInformation();
 
     /** Copia completa de la cartelera; el buscador filtra sobre esta lista sin volver a consultar la BD. */
-    private List<Peliculas> carteleraCompleta = List.of();
+    private List<Pelicula> carteleraCompleta = List.of();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -107,7 +107,7 @@ public class CarteleraController implements Initializable {
             return;
         }
         String busqueda = texto.toLowerCase().trim();
-        ObservableList<Peliculas> filtradas = FXCollections.observableArrayList(
+        ObservableList<Pelicula> filtradas = FXCollections.observableArrayList(
                 carteleraCompleta.stream()
                         .filter(p -> p.getTitulo().toLowerCase().contains(busqueda)
                                 || p.getDirector().toLowerCase().contains(busqueda))
@@ -116,7 +116,7 @@ public class CarteleraController implements Initializable {
     }
 
     /** US-06: detalle completo de la pelicula seleccionada (o panel vacio si no hay ninguna). */
-    private void mostrarDetalle(Peliculas pelicula) {
+    private void mostrarDetalle(Pelicula pelicula) {
         boolean haySeleccion = pelicula != null;
 
         lblSinSeleccion.setVisible(!haySeleccion);
@@ -164,7 +164,7 @@ public class CarteleraController implements Initializable {
 
     @FXML
     public void onEditar(MouseEvent event) {
-        Peliculas seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
+        Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
         if (seleccionada == null) {
             alertInfo.viewAlert("WARNING", "SIN SELECCIÓN", "NINGUNA PELÍCULA SELECCIONADA",
                     "Selecciona una película de la tabla primero.");
@@ -176,7 +176,7 @@ public class CarteleraController implements Initializable {
 
     @FXML
     public void onEliminar(MouseEvent event) {
-        Peliculas seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
+        Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
         if (seleccionada == null) {
             alertInfo.viewAlert("WARNING", "SIN SELECCIÓN", "NINGUNA PELÍCULA SELECCIONADA",
                     "Selecciona una película de la tabla primero.");

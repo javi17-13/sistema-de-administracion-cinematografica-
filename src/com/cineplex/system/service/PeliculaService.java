@@ -2,7 +2,7 @@ package com.cineplex.system.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-import com.cineplex.system.model.Peliculas;
+import com.cineplex.system.model.Pelicula;
 import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.repository.PeliculaRepository;
 
@@ -15,15 +15,15 @@ public class PeliculaService {
 
     private final PeliculaRepository peliculaRepo = new PeliculaRepository();
 
-    public List<Peliculas> obtenerCartelera() {
+    public List<Pelicula> obtenerCartelera() {
         try {
-            return peliculaRepo.leerTodas();
+            return peliculaRepo.listar();
         } catch (RuntimeException e) {
             return List.of();
         }
     }
 
-    public Peliculas obtenerDetalle(int idPelicula) {
+    public Pelicula obtenerDetalle(int idPelicula) {
         try {
             return peliculaRepo.buscarPorId(idPelicula);
         } catch (RuntimeException e) {
@@ -31,16 +31,16 @@ public class PeliculaService {
         }
     }
 
-    public ResultadoOperacion registrar(Peliculas pelicula) {
+    public ResultadoOperacion registrar(Pelicula pelicula) {
         try {
-            peliculaRepo.crear(pelicula);
+            peliculaRepo.agregar(pelicula);
             return ResultadoOperacion.EXITO;
         } catch (RuntimeException e) {
             return ResultadoOperacion.ERROR;
         }
     }
 
-    public ResultadoOperacion editar(Peliculas pelicula) {
+    public ResultadoOperacion editar(Pelicula pelicula) {
         try {
             peliculaRepo.editar(pelicula);
             return ResultadoOperacion.EXITO;

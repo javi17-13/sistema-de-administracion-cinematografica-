@@ -18,7 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import com.cineplex.system.model.ResultadoOperacion;
-import com.cineplex.system.model.Usuarios;
+import com.cineplex.system.model.Usuario;
 import com.cineplex.system.service.UsuarioService;
 import com.cineplex.system.utils.AlertInformation;
 import com.cineplex.system.utils.Session;
@@ -34,15 +34,15 @@ import com.cineplex.system.utils.ViewFactory;
 public class GestionarAdministradoresController implements Initializable {
 
     @FXML
-    private TableView<Usuarios> tablaUsuarios;
+    private TableView<Usuario> tablaUsuarios;
     @FXML
-    private TableColumn<Usuarios, String> colId;
+    private TableColumn<Usuario, String> colId;
     @FXML
-    private TableColumn<Usuarios, String> colNombre;
+    private TableColumn<Usuario, String> colNombre;
     @FXML
-    private TableColumn<Usuarios, String> colUsuario;
+    private TableColumn<Usuario, String> colUsuario;
     @FXML
-    private TableColumn<Usuarios, String> colRol;
+    private TableColumn<Usuario, String> colRol;
 
     @FXML
     private Label lblTituloFormulario;
@@ -64,11 +64,11 @@ public class GestionarAdministradoresController implements Initializable {
     private final Validations validate = new Validations();
 
     /** null = modo creacion; con valor = se esta editando esa cuenta. */
-    private Usuarios usuarioEnEdicion;
+    private Usuario usuarioEnEdicion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colId.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue().getID_Usuario())));
+        colId.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue(). getIdUsuario())));
         colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
         colUsuario.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUsuario()));
         colRol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getRol()));
@@ -86,7 +86,7 @@ public class GestionarAdministradoresController implements Initializable {
         tablaUsuarios.setItems(FXCollections.observableArrayList(usuarioService.obtenerTodos()));
     }
 
-    private void pasarAModoEdicion(Usuarios usuario) {
+    private void pasarAModoEdicion(Usuario usuario) {
         usuarioEnEdicion = usuario;
 
         if (usuario == null) {
@@ -147,7 +147,7 @@ public class GestionarAdministradoresController implements Initializable {
             return;
         }
 
-        Usuarios usuario = new Usuarios();
+        Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setUsuario(usuarioTexto);
         usuario.setRol(rol);
@@ -157,7 +157,7 @@ public class GestionarAdministradoresController implements Initializable {
 
         ResultadoOperacion resultado;
         if (esEdicion) {
-            usuario.setID_Usuario(usuarioEnEdicion.getID_Usuario());
+            usuario.setIdUsuario(usuarioEnEdicion. getIdUsuario());
             resultado = usuarioService.editar(usuario);
         } else {
             resultado = usuarioService.crear(usuario);
@@ -184,7 +184,7 @@ public class GestionarAdministradoresController implements Initializable {
 
     @FXML
     public void onDarDeBaja(MouseEvent event) {
-        Usuarios seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+        Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
             alertInfo.viewAlert("WARNING", "SIN SELECCIÓN", "NINGUNA CUENTA SELECCIONADA",
                     "Selecciona una cuenta de la tabla primero.");
@@ -208,7 +208,7 @@ public class GestionarAdministradoresController implements Initializable {
             return;
         }
 
-        ResultadoOperacion resultado = usuarioService.darDeBaja(seleccionado.getID_Usuario());
+        ResultadoOperacion resultado = usuarioService.darDeBaja(seleccionado.getIdUsuario());
         if (resultado == ResultadoOperacion.EXITO) {
             alertInfo.viewAlert("INFORMATION", "CUENTA DADA DE BAJA", "LISTO",
                     "La cuenta \"" + seleccionado.getUsuario() + "\" se dio de baja.");

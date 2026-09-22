@@ -1,20 +1,25 @@
 package com.cineplex.system.repository;
 
+import com.cineplex.system.config.ConexionDB;
+import com.cineplex.system.model.Funciones;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.cineplex.system.config.ConexionDB;
-import com.cineplex.system.model.Funciones;
 
 public class FuncionRepository {
 
-    private final ConexionDB conexionDB = ConexionDB.getInstanciaConexionDB();
+    private Connection conexion;
+
+    public FuncionRepository() {
+        conexion = ConexionDB.getConnection();
+    }
 
     public List<Funciones> obtenerTodas() {
         List<Funciones> funciones = new ArrayList<>();
-        try (CallableStatement callSP = conexionDB.getConnection()
+        try (CallableStatement callSP = conexion
                      .prepareCall("{call sp_Obtener_Funciones()}")) {
             try (ResultSet resultado = callSP.executeQuery()) {
                 while (resultado.next()) {
@@ -31,7 +36,7 @@ public class FuncionRepository {
     /** US-09: busca funciones por el titulo de la pelicula (busqueda parcial, no distingue mayusculas). */
     public List<Funciones> buscarPorTitulo(String titulo) {
         List<Funciones> funciones = new ArrayList<>();
-        try (CallableStatement callSP = conexionDB.getConnection()
+        try (CallableStatement callSP = conexion
                      .prepareCall("{call sp_Buscar_Funcion_Por_Titulo(?)}")) {
             callSP.setString(1, titulo);
             try (ResultSet resultado = callSP.executeQuery()) {
@@ -49,7 +54,7 @@ public class FuncionRepository {
     /** Los asientos (ej. "C4") que ya tienen boleto vendido para esa funcion. */
     public List<String> obtenerAsientosOcupados(int idFuncion) {
         List<String> asientos = new ArrayList<>();
-        try (CallableStatement callSP = conexionDB.getConnection()
+        try (CallableStatement callSP = conexion
                      .prepareCall("{call sp_Obtener_Asientos_Ocupados(?)}")) {
             callSP.setInt(1, idFuncion);
             try (ResultSet resultado = callSP.executeQuery()) {

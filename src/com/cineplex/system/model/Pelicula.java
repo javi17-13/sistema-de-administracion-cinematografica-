@@ -1,6 +1,6 @@
 package com.cineplex.system.model;
 
-public class Peliculas {
+public class Pelicula {
     
     private int ID_Pelicula;
     private String Titulo;
@@ -10,10 +10,10 @@ public class Peliculas {
     private String Director;
     private String Poster;
     
-    public Peliculas(){
+    public Pelicula(){
     }
     
-    public Peliculas(int ID_Pelicula, String Titulo, String Genero, int Duracion,
+    public Pelicula(int ID_Pelicula, String Titulo, String Genero, int Duracion,
             String Categoria, String Director, String Poster){
         
         this.ID_Pelicula = ID_Pelicula;

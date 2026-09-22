@@ -114,7 +114,7 @@ public class UsuarioRepository {
         usuario.setClave(resultado.getString("Clave"));
         usuario.setRol(resultado.getString("Rol"));
         return usuario;
-    
+    }
 
     public Usuario login(String usuario, String clave) {
 

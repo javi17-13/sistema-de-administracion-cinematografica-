@@ -1,23 +1,22 @@
 package com.cineplex.system.repository;
 
+import com.cineplex.system.config.ConexionDB;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.cineplex.system.config.ConexionDB;
 
 public class BoletoRepository {
 
-    private final ConexionDB conexionDB = ConexionDB.getInstanciaConexionDB();
+    private Connection conexion;
 
-    /**
-     * Inserta el boleto y devuelve el ID que le asigno MySQL.
-     * Si el asiento ya estaba vendido para esa funcion, esto lanza
-     * SQLIntegrityConstraintViolationException (por el UNIQUE de la
-     * tabla) envuelta en RuntimeException -- BoletoService la traduce
-     * a ResultadoCompra.ASIENTO_OCUPADO.
-     */
+    public BoletoRepository() {
+        conexion = ConexionDB.getConnection();
+    }
+
+   
     public int crear(int idFuncion, int idCliente, String asiento, String contenidoQR) {
-        try (CallableStatement callSP = conexionDB.getConnection()
+        try (CallableStatement callSP = conexion
                      .prepareCall("{call sp_Crear_Boleto(?,?,?,?)}")) {
             callSP.setInt(1, idFuncion);
             callSP.setInt(2, idCliente);

@@ -1,4 +1,4 @@
-package com.cineplex.system.utils;
+    package com.cineplex.system.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,13 +34,13 @@ public class ViewFactory {
         Scene scene;
 
         switch (vista) {
-            case "login" -> scene = loadFileFXML("LoginView.fxml", 420, 520);
+            case "login" -> scene = loadFileFXML("Login.fxml", 800, 500);
             case "home" -> scene = loadFileFXML("HomeView.fxml", 860, 540);
             case "cartelera" -> scene = loadFileFXML("CarteleraView.fxml", 1000, 600);
             case "registrarpelicula" -> scene = loadFileFXML("RegistrarPeliculaView.fxml", 720, 560);
             case "administradores" -> scene = loadFileFXML("GestionarAdministradoresView.fxml", 1000, 600);
             case "compraboletos" -> scene = loadFileFXML("CompraBoletoView.fxml", 1180, 720);
-            default -> scene = loadFileFXML("LoginView.fxml", 420, 520);
+            default -> scene = loadFileFXML("Login.fxml", 420, 520);
         }
 
         SceneManager.getInstanciaSceneManager().changeScene(scene);

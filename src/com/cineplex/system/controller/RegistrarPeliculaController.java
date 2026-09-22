@@ -10,7 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import com.cineplex.system.model.Peliculas;
+import com.cineplex.system.model.Pelicula;
 import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.service.PeliculaService;
 import com.cineplex.system.utils.AlertInformation;
@@ -33,7 +33,7 @@ public class RegistrarPeliculaController implements Initializable {
      * el controlador el mismo (no podemos pasarle parametros al
      * constructor), asi que se deja aqui ANTES de cargar la vista.
      */
-    private static Peliculas peliculaEnEdicion;
+    private static Pelicula peliculaEnEdicion;
 
     @FXML
     private Label lblTituloPantalla;
@@ -57,7 +57,7 @@ public class RegistrarPeliculaController implements Initializable {
     private final Validations validate = new Validations();
 
     /** La llama CarteleraController justo antes de abrir esta pantalla en modo edicion. */
-    public static void prepararEdicion(Peliculas pelicula) {
+    public static void prepararEdicion(Pelicula pelicula) {
         peliculaEnEdicion = pelicula;
     }
 
@@ -81,7 +81,7 @@ public class RegistrarPeliculaController implements Initializable {
         }
     }
 
-    private void llenarFormulario(Peliculas pelicula) {
+    private void llenarFormulario(Pelicula pelicula) {
         txtTitulo.setText(pelicula.getTitulo());
         cmbGenero.setValue(pelicula.getGenero());
         cmbCategoria.setValue(pelicula.getCategoria());
@@ -126,7 +126,7 @@ public class RegistrarPeliculaController implements Initializable {
             return;
         }
 
-        Peliculas pelicula = new Peliculas();
+        Pelicula pelicula = new Pelicula();
         pelicula.setTitulo(titulo);
         pelicula.setGenero(genero);
         pelicula.setCategoria(categoria);
