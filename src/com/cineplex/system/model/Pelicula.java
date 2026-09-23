@@ -65,6 +65,5 @@ public class Pelicula {
     public void setPoster(String poster) {
         this.poster = poster;
     }
-    
-    
+
 }

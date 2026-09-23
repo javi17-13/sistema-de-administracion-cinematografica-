@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="860.0" stylesheets="@styles/HomeStyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="860.0" stylesheets="@styles/HomeStyles.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.HomeController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="12.0" styleClass="header">
          <padding>
@@ -29,4 +29,7 @@
          </children>
       </StackPane>
    </center>
+   <left>
+      <Button fx:id="btnPeliculas" mnemonicParsing="false" onAction="#abrirPeliculas" styleClass="peliculas-button" stylesheets="@styles/PeliculaStyles.css" text="Películas" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

@@ -32,16 +32,18 @@ public class PeliculaRepository {
         ps.setString(5, pelicula.getDirector());
         ps.setString(6, pelicula.getPoster());
 
-        ps.executeUpdate();
+       int filas = ps.executeUpdate();
 
-        return true;
+System.out.println("Filas insertadas: " + filas);
+
+return true;
 
     } catch (SQLException e) {
         System.out.println("Error al agregar película: " + e.getMessage());
         return false;
     }
 }
-    public boolean editar(Pelicula pelicula) {
+   public boolean editar(Pelicula pelicula) {
     String sql = "UPDATE Peliculas SET Titulo = ?, Genero = ?, Duracion = ?, "
                + "Categoria = ?, Director = ?, Poster = ? "
                + "WHERE ID_Pelicula = ?";
@@ -57,16 +59,18 @@ public class PeliculaRepository {
         ps.setString(6, pelicula.getPoster());
         ps.setInt(7, pelicula.getIdPelicula());
 
-        ps.executeUpdate();
+        int filasActualizadas = ps.executeUpdate();
 
-        return true;
+        System.out.println("ID de película editada: " + pelicula.getIdPelicula());
+        System.out.println("Filas actualizadas: " + filasActualizadas);
+
+        return filasActualizadas > 0;
 
     } catch (SQLException e) {
         System.out.println("Error al editar película: " + e.getMessage());
         return false;
     }
 }
-  
     public List<Pelicula> listar() {
     List<Pelicula> peliculas = new ArrayList<>();
 

@@ -1,0 +1,111 @@
+.pelicula-pane {
+    -fx-background-color: #0F0F12;
+}
+
+/* Títulos y etiquetas */
+.label {
+    -fx-text-fill: #D8D8D8;
+}
+
+/* Campos de texto */
+.text-field {
+    -fx-background-color: #1A1A1F;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #777777;
+    -fx-border-color: #3A3A42;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+/* Campo seleccionado */
+.text-field:focused {
+    -fx-border-color: #C58A19;
+    -fx-border-width: 2px;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: #1A1A1F;
+    -fx-border-color: #3A3A42;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #1A1A1F;
+    -fx-text-fill: white;
+}
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #C58A19;
+    -fx-text-fill: white;
+}
+
+/* Botones */
+.button {
+    -fx-background-color: #C58A19;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #E0A52A;
+}
+
+.button:pressed {
+    -fx-background-color: #9C6B0F;
+}
+
+/* Tabla */
+.table-view {
+    -fx-background-color: #17171B;
+    -fx-border-color: #3A3A42;
+}
+
+/* Encabezados */
+.table-view .column-header-background {
+    -fx-background-color: #1A1A1F;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1A1A1F;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: #1A1A1F;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #C58A19;
+    -fx-font-weight: bold;
+}
+
+/* Filas */
+.table-view .table-cell {
+    -fx-text-fill: #E0E0E0;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: #17171B;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #1D1D22;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #6F4D12;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+}
+.titulo-pelicula {
+    -fx-text-fill: #C58A19;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+

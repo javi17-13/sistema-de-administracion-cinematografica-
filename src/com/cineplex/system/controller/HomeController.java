@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import com.cineplex.system.utils.Session;
 import com.cineplex.system.utils.ViewFactory;
+import javafx.event.ActionEvent;
 
 public class HomeController implements Initializable {
 
@@ -26,4 +27,10 @@ public class HomeController implements Initializable {
         ViewFactory viewFactory = new ViewFactory();
         viewFactory.viewLogin();
     }
+  @FXML
+public void abrirPeliculas(ActionEvent event) {
+    ViewFactory viewFactory = new ViewFactory();
+    viewFactory.viewPeliculas();
+}
+    
 }
