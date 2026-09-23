@@ -78,3 +78,6 @@ DELIMITER $$
         SELECT LAST_INSERT_ID() AS ID_Boleto;
     END$$
 DELIMITER ;
+
+
+select * from peliculas;
