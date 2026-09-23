@@ -14,13 +14,13 @@ public class FuncionRepository {
     private Connection conexion;
 
     public FuncionRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
     public List<Funciones> obtenerTodas() {
         List<Funciones> funciones = new ArrayList<>();
         try (CallableStatement callSP = conexion
-                     .prepareCall("{call sp_Obtener_Funciones()}")) {
+                .prepareCall("{call sp_Obtener_Funciones()}")) {
             try (ResultSet resultado = callSP.executeQuery()) {
                 while (resultado.next()) {
                     funciones.add(mapearFuncion(resultado));
@@ -37,7 +37,7 @@ public class FuncionRepository {
     public List<Funciones> buscarPorTitulo(String titulo) {
         List<Funciones> funciones = new ArrayList<>();
         try (CallableStatement callSP = conexion
-                     .prepareCall("{call sp_Buscar_Funcion_Por_Titulo(?)}")) {
+                .prepareCall("{call sp_Buscar_Funcion_Por_Titulo(?)}")) {
             callSP.setString(1, titulo);
             try (ResultSet resultado = callSP.executeQuery()) {
                 while (resultado.next()) {
@@ -55,7 +55,7 @@ public class FuncionRepository {
     public List<String> obtenerAsientosOcupados(int idFuncion) {
         List<String> asientos = new ArrayList<>();
         try (CallableStatement callSP = conexion
-                     .prepareCall("{call sp_Obtener_Asientos_Ocupados(?)}")) {
+                .prepareCall("{call sp_Obtener_Asientos_Ocupados(?)}")) {
             callSP.setInt(1, idFuncion);
             try (ResultSet resultado = callSP.executeQuery()) {
                 while (resultado.next()) {

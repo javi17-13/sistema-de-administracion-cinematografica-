@@ -49,8 +49,8 @@ import com.cineplex.system.utils.ViewFactory;
  *   5) se crea el Cliente y el Boleto, y se genera el ticket con su QR
  *
  * El QR se genera con ZXing y se pinta directo en un WritableImage
- * (sin pasar por java.awt/Swing), asi que solo hace falta agregar el
- * jar "core" de ZXing al proyecto -- no el modulo javafx.swing.
+ * (sin pasar por java.awt/Swing), asi que hace falta agregar el jar
+ * "core" de ZXing al proyecto.
  */
 public class CompraBoletoController implements Initializable {
 
@@ -243,17 +243,17 @@ public class CompraBoletoController implements Initializable {
             ResultadoOperacion resultado = boletoService.comprar(
                     funcionSeleccionada.getID_Funcion(), idCliente, asientoSeleccionado, contenidoQR);
 
-            switch (resultado) {
-                case EXITO -> mostrarTicket(funcionSeleccionada, nombre, asientoSeleccionado,
-                        contenidoQR, tarjeta.get());
-                case ASIENTO_OCUPADO -> {
-                    alertInfo.viewAlert("WARNING", "ASIENTO NO DISPONIBLE", "Alguien más lo compró primero",
-                            "Elige otro asiento -- este ya se vendió mientras pagabas.");
-                    dibujarMapaAsientos(funcionSeleccionada);
-                }
-                case DATOS_INVALIDOS -> alertInfo.viewAlert("WARNING", "DATOS INVÁLIDOS", "Información incompleta",
+            if (resultado == ResultadoOperacion.EXITO) {
+                mostrarTicket(funcionSeleccionada, nombre, asientoSeleccionado, contenidoQR, tarjeta.get());
+            } else if (resultado == ResultadoOperacion.ASIENTO_OCUPADO) {
+                alertInfo.viewAlert("WARNING", "ASIENTO NO DISPONIBLE", "Alguien más lo compró primero",
+                        "Elige otro asiento -- este ya se vendió mientras pagabas.");
+                dibujarMapaAsientos(funcionSeleccionada);
+            } else if (resultado == ResultadoOperacion.DATOS_INVALIDOS) {
+                alertInfo.viewAlert("WARNING", "DATOS INVÁLIDOS", "Información incompleta",
                         "Verifica que la función, el cliente y el asiento sean válidos.");
-                default -> alertInfo.viewAlert("ERROR", "ERROR", "No se pudo completar la compra",
+            } else {
+                alertInfo.viewAlert("ERROR", "ERROR", "No se pudo completar la compra",
                         "Ocurrió un error al procesar tu compra. Intenta de nuevo.");
             }
         } catch (RuntimeException e) {
@@ -279,8 +279,7 @@ public class CompraBoletoController implements Initializable {
      * Simulacion de cobro con tarjeta: pide numero/vencimiento/CVV/nombre
      * y no deja cerrar el dialogo con "Pagar" hasta que el formato sea
      * valido (16 digitos, MM/AA, CVV de 3-4 digitos). No se conecta a
-     * ninguna pasarela real -- es para que la UI se sienta como una
-     * compra real, tal como pediste.
+     * ninguna pasarela real.
      */
     private Optional<DatosTarjeta> pedirDatosTarjeta() {
         Dialog<DatosTarjeta> dialog = new Dialog<>();
@@ -353,14 +352,33 @@ public class CompraBoletoController implements Initializable {
         return null; // sin errores
     }
 
-    /** Lo unico del pago que nos interesa conservar para mostrarlo en el ticket. */
-    private record DatosTarjeta(String ultimos4Digitos, String nombreTitular) {
+    /**
+     * Lo unico del pago que nos interesa conservar para mostrarlo en el
+     * ticket. Clase normal en vez de record, para mantener el mismo
+     * estilo que el resto de las clases del proyecto.
+     */
+    private static class DatosTarjeta {
+
+        private final String ultimos4Digitos;
+        private final String nombreTitular;
+
+        public DatosTarjeta(String ultimos4Digitos, String nombreTitular) {
+            this.ultimos4Digitos = ultimos4Digitos;
+            this.nombreTitular = nombreTitular;
+        }
+
+        public String getUltimos4Digitos() {
+            return ultimos4Digitos;
+        }
+
+        public String getNombreTitular() {
+            return nombreTitular;
+        }
     }
 
     /**
-     * El contenido del QR es SOLO la info del boleto (lo que pediste:
-     * funcion, cliente, fecha, etc.) -- los datos de la tarjeta nunca
-     * entran aqui.
+     * El contenido del QR es SOLO la info del boleto (funcion, cliente,
+     * fecha, etc.) -- los datos de la tarjeta nunca entran aqui.
      */
     private String construirContenidoQR(Funciones funcion, String nombreCliente, String asiento) {
         return "CINEPLEX\n"
@@ -386,7 +404,7 @@ public class CompraBoletoController implements Initializable {
                 + "Asiento: " + asiento + "\n"
                 + "Cliente: " + nombreCliente + "\n"
                 + "Total pagado: Q" + funcion.getPrecio()
-                + "  (tarjeta terminada en " + tarjeta.ultimos4Digitos() + ")");
+                + "  (tarjeta terminada en " + tarjeta.getUltimos4Digitos() + ")");
     }
 
     @FXML

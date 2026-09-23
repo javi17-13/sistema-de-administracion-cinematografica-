@@ -6,6 +6,14 @@ import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.model.Usuario;
 import com.cineplex.system.repository.UsuarioRepository;
 
+/**
+ * Logica de negocio de Usuarios (las cuentas de Administrador).
+ *
+ * La columna Usuario tiene UNIQUE en la tabla, asi que si se intenta
+ * repetir un nombre de usuario MySQL rechaza el insert. En vez de dejar
+ * reventar esa excepcion hasta la pantalla, aqui se traduce a
+ * USUARIO_DUPLICADO para poder mostrar un mensaje claro.
+ */
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepo = new UsuarioRepository();

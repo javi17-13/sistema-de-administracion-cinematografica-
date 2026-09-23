@@ -15,7 +15,7 @@ public class UsuarioRepository {
     private Connection conexion;
 
     public UsuarioRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
     public void crear(Usuario usuario) {

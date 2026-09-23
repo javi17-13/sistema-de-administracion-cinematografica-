@@ -1,4 +1,4 @@
-    package com.cineplex.system.utils;
+   package com.cineplex.system.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,14 +33,20 @@ public class ViewFactory {
     private void loadScene(String vista) {
         Scene scene;
 
-        switch (vista) {
-            case "login" -> scene = loadFileFXML("Login.fxml", 800, 500);
-            case "home" -> scene = loadFileFXML("HomeView.fxml", 860, 540);
-            case "cartelera" -> scene = loadFileFXML("CarteleraView.fxml", 1000, 600);
-            case "registrarpelicula" -> scene = loadFileFXML("RegistrarPeliculaView.fxml", 720, 560);
-            case "administradores" -> scene = loadFileFXML("GestionarAdministradoresView.fxml", 1000, 600);
-            case "compraboletos" -> scene = loadFileFXML("CompraBoletoView.fxml", 1180, 720);
-            default -> scene = loadFileFXML("Login.fxml", 420, 520);
+        if (vista.equals("login")) {
+            scene = loadFileFXML("Login.fxml", 800, 500);
+        } else if (vista.equals("home")) {
+            scene = loadFileFXML("HomeView.fxml", 860, 540);
+        } else if (vista.equals("cartelera")) {
+            scene = loadFileFXML("CarteleraView.fxml", 1000, 600);
+        } else if (vista.equals("registrarpelicula")) {
+            scene = loadFileFXML("RegistrarPeliculaView.fxml", 720, 560);
+        } else if (vista.equals("administradores")) {
+            scene = loadFileFXML("GestionarAdministradoresView.fxml", 1000, 600);
+        } else if (vista.equals("compraboletos")) {
+            scene = loadFileFXML("CompraBoletoView.fxml", 1180, 720);
+        } else {
+            scene = loadFileFXML("Login.fxml", 420, 520);
         }
 
         SceneManager.getInstanciaSceneManager().changeScene(scene);

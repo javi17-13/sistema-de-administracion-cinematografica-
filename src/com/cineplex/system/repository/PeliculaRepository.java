@@ -10,22 +10,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Unica clase que habla con la tabla Peliculas. Usa los procedimientos
- * almacenados de "DML Cineplex.sql" (sp_Crear_Peliculas, sp_Leer_Peliculas,
- * sp_Editar_Peliculas, sp_Eliminar_Peliculas) para el CRUD. Las
- * comprobaciones de titulo repetido usan consultas directas porque no
- * hay un procedimiento para eso.
- */
 public class PeliculaRepository {
 
     private Connection conexion;
 
     public PeliculaRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
-    public boolean agregar(Pelicula pelicula) {
+    // Antes esto atrapaba el SQLException aqui mismo y devolvia
+    // true/false, y el Service nunca revisaba ese valor -- registrar
+    // una pelicula siempre decia "EXITO" aunque el guardado fallara.
+    // Ahora, igual que UsuarioRepository, se deja pasar la excepcion
+    // hacia arriba para que el Service se entere de verdad.
+    public void agregar(Pelicula pelicula) {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Crear_Peliculas(?,?,?,?,?,?)}")) {
 
@@ -37,15 +35,14 @@ public class PeliculaRepository {
             callSP.setString(6, pelicula.getPoster());
 
             callSP.execute();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Error al agregar película: " + e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
-    public boolean editar(Pelicula pelicula) {
+    public void editar(Pelicula pelicula) {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Editar_Peliculas(?,?,?,?,?,?,?)}")) {
 
@@ -58,11 +55,10 @@ public class PeliculaRepository {
             callSP.setString(7, pelicula.getPoster());
 
             callSP.execute();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Error al editar película: " + e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -80,6 +76,7 @@ public class PeliculaRepository {
 
         } catch (SQLException e) {
             System.out.println("Error al listar películas: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return peliculas;
@@ -99,12 +96,15 @@ public class PeliculaRepository {
 
         } catch (SQLException e) {
             System.out.println("Error al buscar la película: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return null;
     }
 
-    // No hay procedimiento para esto, se usa una consulta directa.
+    // No hay procedimiento almacenado para esto, se usa una consulta
+    // directa. Antes el Service tenia estos metodos listos pero nunca
+    // los llamaba -- se podia registrar la misma pelicula dos veces.
     public boolean existeTitulo(String titulo) {
         String sql = "SELECT * FROM Peliculas WHERE Titulo = ?";
 
@@ -117,11 +117,10 @@ public class PeliculaRepository {
 
         } catch (SQLException e) {
             System.out.println("Error al comprobar título: " + e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
-    // No hay procedimiento para esto, se usa una consulta directa.
     public boolean existeTituloExceptoId(String titulo, int idPelicula) {
         String sql = "SELECT * FROM Peliculas WHERE Titulo = ? AND ID_Pelicula <> ?";
 
@@ -135,21 +134,20 @@ public class PeliculaRepository {
 
         } catch (SQLException e) {
             System.out.println("Error al comprobar título: " + e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
-    public boolean eliminar(int idPelicula) {
+    public void eliminar(int idPelicula) {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Eliminar_Peliculas(?)}")) {
 
             callSP.setInt(1, idPelicula);
             callSP.execute();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Error al eliminar película: " + e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
     }
 

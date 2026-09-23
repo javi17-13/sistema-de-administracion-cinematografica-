@@ -4,23 +4,39 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 public class ConexionDB {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/Cineplex_IN4AV";
-    private static final String USER = "IN4AV";
-    private static final String PASSWORD = "&mnid4AV";
+    private static ConexionDB instanciaConexionDB;
+    private Connection connection;
 
-    public static Connection getConnection() {
-
-        Connection conexion = null;
-
+    private ConexionDB() {
         try {
-            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://" + Environment.LOCATION_SERVICE + "/" + Environment.DATA_BASE,
+                    Environment.USER,
+                    Environment.PASSWORD);
             System.out.println("Conexión exitosa a MySQL");
-        } catch (SQLException e) {
-            System.out.println("Error al conectar: " + e.getMessage());
+        } catch (ClassNotFoundException classNotFound) {
+            System.out.println("Error: no se encontro el driver de MySQL");
+        } catch (SQLException sqlException) {
+            System.out.println("Error al conectar con la base de datos: " + sqlException.getMessage());
         }
+    }
 
-        return conexion;
+    public static ConexionDB getInstanciaConexionDB() {
+        if (instanciaConexionDB == null) {
+            instanciaConexionDB = new ConexionDB();
+        }
+        return instanciaConexionDB;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

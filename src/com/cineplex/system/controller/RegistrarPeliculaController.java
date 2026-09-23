@@ -18,9 +18,9 @@ import com.cineplex.system.utils.Validations;
 import com.cineplex.system.utils.ViewFactory;
 
 /**
- * Pantalla 3 del backlog: "Registrar pelicula" -- y tambien la edicion
- * (US-03), porque el formulario es EXACTAMENTE el mismo; lo unico que
- * cambia es si al final se llama a registrar(...) o a editar(...).
+ * Pantalla de "Registrar pelicula" -- y tambien la edicion (US-03),
+ * porque el formulario es EXACTAMENTE el mismo; lo unico que cambia es
+ * si al final se llama a registrar(...) o a editar(...).
  *
  * Como saber en que modo abrir: antes de navegar hacia aca, la pantalla
  * de cartelera llama a prepararEdicion(pelicula). Si nadie lo llamo, se
@@ -152,6 +152,12 @@ public class RegistrarPeliculaController implements Initializable {
                             : "\"" + titulo + "\" se agregó a la cartelera.");
             peliculaEnEdicion = null;
             new ViewFactory().viewCartelera();
+        } else if (resultado == ResultadoOperacion.TITULO_DUPLICADO) {
+            // Antes esta validacion existia en el repositorio pero
+            // nadie la llamaba: se podia registrar la misma pelicula
+            // dos veces sin ningun aviso.
+            alertInfo.viewAlert("WARNING", "TÍTULO EN USO", "ESA PELÍCULA YA ESTÁ REGISTRADA",
+                    "Ya hay una película con el título \"" + titulo + "\". Revisa la cartelera.");
         } else {
             alertInfo.viewAlert("ERROR", "NO SE PUDO GUARDAR", "ERROR AL GUARDAR",
                     "Ocurrió un error al guardar la película. Revisa la conexión a la base de datos.");

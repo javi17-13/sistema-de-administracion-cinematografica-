@@ -119,7 +119,11 @@ public class LoginController implements Initializable {
                 return;
             }
 
+            // Se guarda el usuario Y el rol: el rol es lo que despues
+            // decide a que pantallas puede entrar (ej. Cartelera es
+            // exclusiva del Administrador de Cine).
             Session.setUsuarioActual(usuario);
+            Session.setRolActual(rol);
 
             if (chkRecordarSesion.isSelected()) {
                 SesionPreferencias.recordarUsuario(usuario);

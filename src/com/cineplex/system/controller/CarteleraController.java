@@ -1,14 +1,15 @@
 package com.cineplex.system.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -74,7 +75,7 @@ public class CarteleraController implements Initializable {
     private final AlertInformation alertInfo = new AlertInformation();
 
     /** Copia completa de la cartelera; el buscador filtra sobre esta lista sin volver a consultar la BD. */
-    private List<Pelicula> carteleraCompleta = List.of();
+    private List<Pelicula> carteleraCompleta = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -106,13 +107,19 @@ public class CarteleraController implements Initializable {
             tablaPeliculas.setItems(FXCollections.observableArrayList(carteleraCompleta));
             return;
         }
+
         String busqueda = texto.toLowerCase().trim();
-        ObservableList<Pelicula> filtradas = FXCollections.observableArrayList(
-                carteleraCompleta.stream()
-                        .filter(p -> p.getTitulo().toLowerCase().contains(busqueda)
-                                || p.getDirector().toLowerCase().contains(busqueda))
-                        .toList());
-        tablaPeliculas.setItems(filtradas);
+        List<Pelicula> filtradas = new ArrayList<>();
+
+        for (Pelicula pelicula : carteleraCompleta) {
+            boolean coincideTitulo = pelicula.getTitulo().toLowerCase().contains(busqueda);
+            boolean coincideDirector = pelicula.getDirector().toLowerCase().contains(busqueda);
+            if (coincideTitulo || coincideDirector) {
+                filtradas.add(pelicula);
+            }
+        }
+
+        tablaPeliculas.setItems(FXCollections.observableArrayList(filtradas));
     }
 
     /** US-06: detalle completo de la pelicula seleccionada (o panel vacio si no hay ninguna). */
@@ -121,8 +128,10 @@ public class CarteleraController implements Initializable {
 
         lblSinSeleccion.setVisible(!haySeleccion);
         lblSinSeleccion.setManaged(!haySeleccion);
-        for (javafx.scene.Node nodo : new javafx.scene.Node[]{imgPoster, lblTitulo, lblGenero,
-                lblDuracion, lblCategoria, lblDirector, btnEditar, btnEliminar}) {
+
+        Node[] nodosDetalle = {imgPoster, lblTitulo, lblGenero, lblDuracion, lblCategoria, lblDirector,
+                btnEditar, btnEliminar};
+        for (Node nodo : nodosDetalle) {
             nodo.setVisible(haySeleccion);
             nodo.setManaged(haySeleccion);
         }

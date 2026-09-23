@@ -68,13 +68,19 @@ public class GestionarAdministradoresController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colId.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue(). getIdUsuario())));
+        colId.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue().getIdUsuario())));
         colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
         colUsuario.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUsuario()));
         colRol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getRol()));
 
         tablaUsuarios.setPlaceholder(new Label("No hay cuentas registradas todavía."));
-        cmbRol.setItems(FXCollections.observableArrayList("Administrador", "Empleado"));
+
+       
+        cmbRol.setItems(FXCollections.observableArrayList(
+                "Gerente",
+                "Administrador",
+                "Administrador de Cine"
+        ));
 
         tablaUsuarios.getSelectionModel().selectedItemProperty()
                 .addListener((obs, anterior, seleccionado) -> pasarAModoEdicion(seleccionado));
@@ -157,27 +163,27 @@ public class GestionarAdministradoresController implements Initializable {
 
         ResultadoOperacion resultado;
         if (esEdicion) {
-            usuario.setIdUsuario(usuarioEnEdicion. getIdUsuario());
+            usuario.setIdUsuario(usuarioEnEdicion.getIdUsuario());
             resultado = usuarioService.editar(usuario);
         } else {
             resultado = usuarioService.crear(usuario);
         }
 
-        switch (resultado) {
-            case EXITO -> {
-                alertInfo.viewAlert("INFORMATION",
-                        esEdicion ? "CUENTA ACTUALIZADA" : "CUENTA CREADA", "LISTO",
-                        esEdicion
-                                ? "Los datos de \"" + usuarioTexto + "\" se actualizaron."
-                                : "La cuenta \"" + usuarioTexto + "\" se creó correctamente.");
-                tablaUsuarios.getSelectionModel().clearSelection();
-                pasarAModoEdicion(null);
-                cargarTabla();
-            }
-            case USUARIO_DUPLICADO -> alertInfo.viewAlert("WARNING", "USUARIO EN USO",
+        if (resultado == ResultadoOperacion.EXITO) {
+            alertInfo.viewAlert("INFORMATION",
+                    esEdicion ? "CUENTA ACTUALIZADA" : "CUENTA CREADA", "LISTO",
+                    esEdicion
+                            ? "Los datos de \"" + usuarioTexto + "\" se actualizaron."
+                            : "La cuenta \"" + usuarioTexto + "\" se creó correctamente.");
+            tablaUsuarios.getSelectionModel().clearSelection();
+            pasarAModoEdicion(null);
+            cargarTabla();
+        } else if (resultado == ResultadoOperacion.USUARIO_DUPLICADO) {
+            alertInfo.viewAlert("WARNING", "USUARIO EN USO",
                     "ESE NOMBRE DE USUARIO YA EXISTE",
                     "Ya hay una cuenta con el usuario \"" + usuarioTexto + "\". Elige otro.");
-            case ERROR -> alertInfo.viewAlert("ERROR", "NO SE PUDO GUARDAR", "ERROR AL GUARDAR",
+        } else {
+            alertInfo.viewAlert("ERROR", "NO SE PUDO GUARDAR", "ERROR AL GUARDAR",
                     "Ocurrió un error al guardar la cuenta. Revisa la conexión a la base de datos.");
         }
     }

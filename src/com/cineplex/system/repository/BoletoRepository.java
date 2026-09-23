@@ -11,13 +11,13 @@ public class BoletoRepository {
     private Connection conexion;
 
     public BoletoRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
-   
+    
     public int crear(int idFuncion, int idCliente, String asiento, String contenidoQR) {
         try (CallableStatement callSP = conexion
-                     .prepareCall("{call sp_Crear_Boleto(?,?,?,?)}")) {
+                .prepareCall("{call sp_Crear_Boleto(?,?,?,?)}")) {
             callSP.setInt(1, idFuncion);
             callSP.setInt(2, idCliente);
             callSP.setString(3, asiento);

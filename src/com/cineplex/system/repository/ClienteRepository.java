@@ -11,13 +11,13 @@ public class ClienteRepository {
     private Connection conexion;
 
     public ClienteRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
-    /** Crea el cliente y devuelve el ID que le asigno MySQL. */
+   
     public int crear(String nombre, String correo) {
         try (CallableStatement callSP = conexion
-                     .prepareCall("{call sp_Crear_Cliente(?,?)}")) {
+                .prepareCall("{call sp_Crear_Cliente(?,?)}")) {
             callSP.setString(1, nombre);
             callSP.setString(2, correo);
             try (ResultSet resultado = callSP.executeQuery()) {
