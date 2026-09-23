@@ -159,11 +159,13 @@ public class PeliculaController {
 
         pelicula.setPoster("poster.jpg");
 
-        if (peliculaService.agregar(pelicula)) {
+        String error = peliculaService.agregar(pelicula);
+
+        if (error == null) {
             System.out.println("Película guardada correctamente.");
             tblPeliculas.getItems().setAll(peliculaService.listar());
         } else {
-            System.out.println("No se pudo guardar la película.");
+            System.out.println(error);
         }
     }
 
@@ -191,7 +193,9 @@ public class PeliculaController {
 
         pelicula.setPoster("poster.jpg");
 
-        if (peliculaService.editar(pelicula)) {
+        String error = peliculaService.editar(pelicula);
+
+        if (error == null) {
             System.out.println("Película editada correctamente.");
 
             tblPeliculas.getItems().setAll(peliculaService.listar());
