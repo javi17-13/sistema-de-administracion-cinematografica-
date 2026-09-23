@@ -1,5 +1,5 @@
 package com.cineplex.system.controller;
-
+ 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,18 +21,19 @@ import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.model.Usuario;
 import com.cineplex.system.service.UsuarioService;
 import com.cineplex.system.utils.AlertInformation;
+import com.cineplex.system.utils.Roles;
 import com.cineplex.system.utils.Session;
 import com.cineplex.system.utils.Validations;
 import com.cineplex.system.utils.ViewFactory;
-
+ 
 /**
- * Pantalla de "Gestionar Administradores": lista las cuentas y permite
- * crear, editar y dar de baja. El formulario de la derecha sirve para
- * las dos cosas -- si hay una fila seleccionada pasa a modo edicion, y
- * con "Limpiar" vuelve a modo creacion.
- */
+* Pantalla de "Gestionar Administradores": lista las cuentas y permite
+* crear, editar y dar de baja. El formulario de la derecha sirve para
+* las dos cosas -- si hay una fila seleccionada pasa a modo edicion, y
+* con "Limpiar" vuelve a modo creacion.
+*/
 public class GestionarAdministradoresController implements Initializable {
-
+ 
     @FXML
     private TableView<Usuario> tablaUsuarios;
     @FXML
@@ -43,7 +44,7 @@ public class GestionarAdministradoresController implements Initializable {
     private TableColumn<Usuario, String> colUsuario;
     @FXML
     private TableColumn<Usuario, String> colRol;
-
+ 
     @FXML
     private Label lblTituloFormulario;
     @FXML
@@ -58,50 +59,59 @@ public class GestionarAdministradoresController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnDarDeBaja;
-
+ 
     private final UsuarioService usuarioService = new UsuarioService();
     private final AlertInformation alertInfo = new AlertInformation();
     private final Validations validate = new Validations();
-
+ 
     /** null = modo creacion; con valor = se esta editando esa cuenta. */
     private Usuario usuarioEnEdicion;
-
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Segunda barrera: solo el Administrador de Cine administra
+        // cuentas de Administradores y Gerentes. El boton del Home ya
+        // lo bloquea, esto cubre cualquier otra via de acceso.
+        if (!Roles.puedeGestionarAdministradores(Session.getRolActual())) {
+            alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
+                    "Solo el Administrador de Cine puede administrar cuentas.");
+            new ViewFactory().viewHome();
+            return;
+        }
+ 
         colId.setCellValueFactory(d -> new SimpleStringProperty(String.valueOf(d.getValue().getIdUsuario())));
         colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
         colUsuario.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUsuario()));
         colRol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getRol()));
-
+ 
         tablaUsuarios.setPlaceholder(new Label("No hay cuentas registradas todavía."));
-
-       
+ 
         cmbRol.setItems(FXCollections.observableArrayList(
                 "Gerente",
                 "Administrador",
                 "Administrador de Cine"
         ));
-
+ 
         tablaUsuarios.getSelectionModel().selectedItemProperty()
                 .addListener((obs, anterior, seleccionado) -> pasarAModoEdicion(seleccionado));
-
+ 
         cargarTabla();
     }
-
+ 
     private void cargarTabla() {
         tablaUsuarios.setItems(FXCollections.observableArrayList(usuarioService.obtenerTodos()));
     }
-
+ 
     private void pasarAModoEdicion(Usuario usuario) {
         usuarioEnEdicion = usuario;
-
+ 
         if (usuario == null) {
             lblTituloFormulario.setText("NUEVA CUENTA");
             btnGuardar.setText("Crear cuenta");
             limpiarFormulario();
             return;
         }
-
+ 
         lblTituloFormulario.setText("EDITAR CUENTA");
         btnGuardar.setText("Guardar cambios");
         txtNombre.setText(usuario.getNombre());
@@ -109,36 +119,36 @@ public class GestionarAdministradoresController implements Initializable {
         pwdClave.clear(); //vacia a proposito: solo se cambia si escriben una nueva
         cmbRol.setValue(usuario.getRol());
     }
-
+ 
     private void limpiarFormulario() {
         txtNombre.clear();
         txtUsuario.clear();
         pwdClave.clear();
         cmbRol.setValue(null);
     }
-
+ 
     @FXML
     public void onGuardar(MouseEvent event) {
         String nombre = txtNombre.getText().trim();
         String usuarioTexto = txtUsuario.getText().trim();
         String clave = pwdClave.getText().trim();
         String rol = cmbRol.getValue();
-
+ 
         boolean esEdicion = usuarioEnEdicion != null;
-
+ 
         if (validate.validateTextEmpty(nombre) || validate.validateTextEmpty(usuarioTexto) || rol == null) {
             alertInfo.viewAlert("WARNING", "CAMPOS INCOMPLETOS", "FALTAN DATOS",
                     "Llena el nombre, el usuario y el rol.");
             return;
         }
-
+ 
         //al crear la clave es obligatoria; al editar, vacia significa "dejala igual"
         if (!esEdicion && validate.validateTextEmpty(clave)) {
             alertInfo.viewAlert("WARNING", "FALTA LA CONTRASEÑA", "CONTRASEÑA REQUERIDA",
                     "Escribe una contraseña para la cuenta nueva.");
             return;
         }
-
+ 
         //limites del DDL: Nombre 100, Usuario 100, Clave 20, Rol 50
         String campoLargo = "";
         if (!validate.validateTextLength(nombre, 100)) {
@@ -152,7 +162,7 @@ public class GestionarAdministradoresController implements Initializable {
             alertInfo.viewAlert("WARNING", "CAMPO DEMASIADO LARGO", "ERROR DE LONGITUD", campoLargo);
             return;
         }
-
+ 
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setUsuario(usuarioTexto);
@@ -160,7 +170,7 @@ public class GestionarAdministradoresController implements Initializable {
         //sp_Editar_Usuarios siempre pide la clave, asi que si la dejaron
         //vacia se reenvia la que ya tenia guardada
         usuario.setClave(clave.isEmpty() && esEdicion ? usuarioEnEdicion.getClave() : clave);
-
+ 
         ResultadoOperacion resultado;
         if (esEdicion) {
             usuario.setIdUsuario(usuarioEnEdicion.getIdUsuario());
@@ -168,7 +178,7 @@ public class GestionarAdministradoresController implements Initializable {
         } else {
             resultado = usuarioService.crear(usuario);
         }
-
+ 
         if (resultado == ResultadoOperacion.EXITO) {
             alertInfo.viewAlert("INFORMATION",
                     esEdicion ? "CUENTA ACTUALIZADA" : "CUENTA CREADA", "LISTO",
@@ -187,7 +197,7 @@ public class GestionarAdministradoresController implements Initializable {
                     "Ocurrió un error al guardar la cuenta. Revisa la conexión a la base de datos.");
         }
     }
-
+ 
     @FXML
     public void onDarDeBaja(MouseEvent event) {
         Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -196,24 +206,24 @@ public class GestionarAdministradoresController implements Initializable {
                     "Selecciona una cuenta de la tabla primero.");
             return;
         }
-
+ 
         //evita que alguien se deje a si mismo fuera del sistema
         if (seleccionado.getUsuario().equals(Session.getUsuarioActual())) {
             alertInfo.viewAlert("WARNING", "NO PERMITIDO", "ES TU PROPIA CUENTA",
                     "No puedes dar de baja la cuenta con la que iniciaste sesión.");
             return;
         }
-
+ 
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("DAR DE BAJA");
         confirmacion.setHeaderText("¿Dar de baja la cuenta \"" + seleccionado.getUsuario() + "\"?");
         confirmacion.setContentText("Esa persona ya no podrá iniciar sesión. Esta acción no se puede deshacer.");
         Optional<ButtonType> respuesta = confirmacion.showAndWait();
-
+ 
         if (respuesta.isEmpty() || respuesta.get() != ButtonType.OK) {
             return;
         }
-
+ 
         ResultadoOperacion resultado = usuarioService.darDeBaja(seleccionado.getIdUsuario());
         if (resultado == ResultadoOperacion.EXITO) {
             alertInfo.viewAlert("INFORMATION", "CUENTA DADA DE BAJA", "LISTO",
@@ -226,18 +236,18 @@ public class GestionarAdministradoresController implements Initializable {
                     "Ocurrió un error al dar de baja la cuenta.");
         }
     }
-
+ 
     @FXML
     public void onCancelarEdicion(MouseEvent event) {
         tablaUsuarios.getSelectionModel().clearSelection();
         pasarAModoEdicion(null);
     }
-
+ 
     @FXML
     public void onRefrescar(MouseEvent event) {
         cargarTabla();
     }
-
+ 
     @FXML
     public void onVolver(MouseEvent event) {
         new ViewFactory().viewHome();

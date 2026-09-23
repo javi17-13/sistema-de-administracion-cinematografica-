@@ -1,4 +1,4 @@
-package com.cineplex.system.service;
+   package com.cineplex.system.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
