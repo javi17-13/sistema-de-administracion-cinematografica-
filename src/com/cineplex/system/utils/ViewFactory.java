@@ -16,6 +16,10 @@ public class ViewFactory {
     public void viewPeliculas() {
     loadScene("peliculas");
 }
+
+    public void viewCompraBoleto() {
+        loadScene("compraboleto");
+    }
  
     private void loadScene(String vista) {
         Scene scene;
@@ -27,6 +31,8 @@ public class ViewFactory {
                 scene = loadFileFXML("HomeView.fxml", 860, 540);
                 case "peliculas" ->
             scene = loadFileFXML("Pelicula.fxml", 900, 600);
+            case "compraboleto" ->
+                scene = loadFileFXML("CompraBoletoView.fxml", 1180, 720);
             default ->
                 scene = loadFileFXML("Login.fxml", 420, 520);
         }

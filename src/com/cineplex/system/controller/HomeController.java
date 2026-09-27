@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import com.cineplex.system.utils.AlertInformation;
 import com.cineplex.system.utils.Session;
 import com.cineplex.system.utils.ViewFactory;
 import javafx.event.ActionEvent;
@@ -32,5 +33,31 @@ public void abrirPeliculas(ActionEvent event) {
     ViewFactory viewFactory = new ViewFactory();
     viewFactory.viewPeliculas();
 }
-    
+
+    @FXML
+    public void abrirCompraBoletos(ActionEvent event) {
+        ViewFactory viewFactory = new ViewFactory();
+        viewFactory.viewCompraBoleto();
+    }
+
+    @FXML
+    public void abrirCartelera(ActionEvent event) {
+        mostrarProximamente("Cartelera");
+    }
+
+    @FXML
+    public void abrirRegistrarPelicula(ActionEvent event) {
+        mostrarProximamente("Registrar película");
+    }
+
+    @FXML
+    public void abrirAdministradores(ActionEvent event) {
+        mostrarProximamente("Administradores");
+    }
+
+    private void mostrarProximamente(String opcion) {
+        new AlertInformation().viewAlert("INFORMATION", "PRÓXIMAMENTE", opcion,
+                "Esta opción aún no está disponible.");
+    }
+
 }

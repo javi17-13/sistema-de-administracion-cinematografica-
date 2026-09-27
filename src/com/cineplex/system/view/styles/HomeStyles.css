@@ -46,3 +46,26 @@
     -fx-text-alignment: center;
     -fx-max-width: 380px;
 }
+
+.menu-lateral {
+    -fx-background-color: #1B1B22;
+    -fx-border-color: #E7B93C;
+    -fx-border-width: 0 2 0 0;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #C7C7D1;
+    -fx-border-color: #E7B93C;
+    -fx-border-width: 1.2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 12px;
+    -fx-padding: 8 10;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #E7B93C;
+    -fx-text-fill: #1B1B22;
+}
