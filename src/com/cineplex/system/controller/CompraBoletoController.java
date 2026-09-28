@@ -40,13 +40,13 @@ import com.cineplex.system.utils.ViewFactory;
 
 /**
  * Flujo completo de compra:
- *   1) buscar/elegir una funcion (US-09: por titulo de pelicula)
- *   2) elegir un asiento libre en el mapa
- *   3) confirmar la compra (Alert de confirmacion)
- *   4) pagar con tarjeta (Dialog propio, con validacion basica -- esto
- *      es una SIMULACION de cobro para el proyecto, no se conecta a
- *      ninguna pasarela de pago real)
- *   5) se crea el Cliente y el Boleto, y se genera el ticket con su QR
+ *  1) buscar/elegir una funcion (US-09: por titulo de pelicula)
+ *  2) elegir un asiento libre en el mapa
+ *  3) confirmar la compra (Alert de confirmacion)
+ *  4) pagar con tarjeta (Dialog propio, con validacion basica -- esto
+ *     es una SIMULACION de cobro para el proyecto, no se conecta a
+ *     ninguna pasarela de pago real)
+ *  5) se crea el Cliente y el Boleto, y se genera el ticket con su QR
  *
  * El QR se genera con ZXing y se pinta directo en un WritableImage
  * (sin pasar por java.awt/Swing), asi que hace falta agregar el jar
@@ -165,15 +165,14 @@ public class CompraBoletoController implements Initializable {
         boxDetalleFuncion.setManaged(true);
 
         lblTituloFuncion.setText(funcion.getTitulo());
-        lblInfoFuncion.setText(funcion.getNombreSala() + "  ·  " + funcion.getFecha() + " " + funcion.getHora()
-                + "  ·  " + funcion.getDuracion() + " min  ·  " + funcion.getCategoria());
-        lblAsientoSeleccionado.setText("—");
+        lblInfoFuncion.setText(funcion.getNombreSala() + " . " + funcion.getFecha() + " " + funcion.getHora()
+                + " . " + funcion.getDuracion() + " min . " + funcion.getCategoria());
+        lblAsientoSeleccionado.setText("-");
         lblPrecioTotal.setText("Q" + funcion.getPrecio());
 
         dibujarMapaAsientos(funcion);
     }
 
-    /** Los asientos se generan al vuelo (Fila+Columna, ej. "C4") a partir de Filas/Columnas de la Sala. */
     private void dibujarMapaAsientos(Funciones funcion) {
         gridAsientos.getChildren().clear();
         botonesPorAsiento.clear();
@@ -231,6 +230,7 @@ public class CompraBoletoController implements Initializable {
         if (!confirmarCompra(funcionSeleccionada, asientoSeleccionado)) {
             return;
         }
+
         Optional<DatosTarjeta> tarjeta = pedirDatosTarjeta();
         if (tarjeta.isEmpty()) {
             return; // el cliente cancelo el pago, no se crea nada
@@ -249,9 +249,6 @@ public class CompraBoletoController implements Initializable {
                 alertInfo.viewAlert("WARNING", "ASIENTO NO DISPONIBLE", "Alguien más lo compró primero",
                         "Elige otro asiento -- este ya se vendió mientras pagabas.");
                 dibujarMapaAsientos(funcionSeleccionada);
-            } else if (resultado == ResultadoOperacion.DATOS_INVALIDOS) {
-                alertInfo.viewAlert("WARNING", "DATOS INVÁLIDOS", "Información incompleta",
-                        "Verifica que la función, el cliente y el asiento sean válidos.");
             } else {
                 alertInfo.viewAlert("ERROR", "ERROR", "No se pudo completar la compra",
                         "Ocurrió un error al procesar tu compra. Intenta de nuevo.");
@@ -268,7 +265,7 @@ public class CompraBoletoController implements Initializable {
         confirmacion.setTitle("CONFIRMAR COMPRA");
         confirmacion.setHeaderText("¿Confirmas la compra de este boleto?");
         confirmacion.setContentText(funcion.getTitulo()
-                + "\n" + funcion.getNombreSala() + "  ·  " + funcion.getFecha() + " " + funcion.getHora()
+                + "\n" + funcion.getNombreSala() + " . " + funcion.getFecha() + " " + funcion.getHora()
                 + "\nAsiento: " + asiento
                 + "\nTotal a pagar: Q" + funcion.getPrecio());
         Optional<ButtonType> respuesta = confirmacion.showAndWait();
@@ -290,7 +287,7 @@ public class CompraBoletoController implements Initializable {
         dialog.getDialogPane().getButtonTypes().addAll(botonPagar, ButtonType.CANCEL);
 
         TextField txtNumero = new TextField();
-        txtNumero.setPromptText("1234 5678 9012 3456");
+        txtNumero.setPromptText("16 dígitos de la tarjeta");
         TextField txtVencimiento = new TextField();
         txtVencimiento.setPromptText("MM/AA");
         PasswordField txtCvv = new PasswordField();
@@ -390,7 +387,7 @@ public class CompraBoletoController implements Initializable {
     }
 
     private void mostrarTicket(Funciones funcion, String nombreCliente, String asiento,
-                                String contenidoQR, DatosTarjeta tarjeta) {
+                               String contenidoQR, DatosTarjeta tarjeta) {
         panelSeleccion.setVisible(false);
         panelSeleccion.setManaged(false);
         panelTicket.setVisible(true);
@@ -400,11 +397,12 @@ public class CompraBoletoController implements Initializable {
 
         txtResumenTicket.setText(
                 funcion.getTitulo() + "\n"
-                + funcion.getNombreSala() + "  ·  " + funcion.getFecha() + " " + funcion.getHora() + "\n"
+                + funcion.getNombreSala() + " . " + funcion.getFecha() + " " + funcion.getHora() + "\n"
                 + "Asiento: " + asiento + "\n"
                 + "Cliente: " + nombreCliente + "\n"
                 + "Total pagado: Q" + funcion.getPrecio()
-                + "  (tarjeta terminada en " + tarjeta.getUltimos4Digitos() + ")");
+                + " (tarjeta terminada en " + tarjeta.getUltimos4Digitos() + ")"
+        );
     }
 
     @FXML

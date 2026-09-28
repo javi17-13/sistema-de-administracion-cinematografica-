@@ -1,83 +1,84 @@
 package com.cineplex.system.model;
 
 public class Pelicula {
-    
-    private int ID_Pelicula;
-    private String Titulo;
-    private String Genero;
-    private int Duracion;
-    private String Categoria;
-    private String Director;
-    private String Poster;
-    
-    public Pelicula(){
-    }
-    
-    public Pelicula(int ID_Pelicula, String Titulo, String Genero, int Duracion,
-            String Categoria, String Director, String Poster){
-        
-        this.ID_Pelicula = ID_Pelicula;
-        this.Titulo = Titulo;
-        this.Genero = Genero;
-        this.Duracion = Duracion;
-        this.Categoria = Categoria;
-        this.Director = Director;
-        this.Poster = Poster;
+
+    private int idPelicula;
+    private String titulo;
+    private String genero;
+    private int duracion;
+    private String categoria;
+    private String director;
+    private String poster;
+
+    // Constructor vacío
+    public Pelicula() {
     }
 
-    public int getID_Pelicula() {
-        return ID_Pelicula;
+    // Constructor con parámetros
+    public Pelicula(int idPelicula, String titulo, String genero, int duracion, String categoria, String director, String poster) {
+        this.idPelicula = idPelicula;
+        this.titulo = titulo;
+        this.genero = genero;
+        this.duracion = duracion;
+        this.categoria = categoria;
+        this.director = director;
+        this.poster = poster;
     }
 
-    public void setID_Pelicula(int ID_Pelicula) {
-        this.ID_Pelicula = ID_Pelicula;
+    // Getters y Setters
+    public int getIdPelicula() {
+        return idPelicula;
+    }
+
+    public void setIdPelicula(int idPelicula) {
+        this.idPelicula = idPelicula;
     }
 
     public String getTitulo() {
-        return Titulo;
+        return titulo;
     }
 
-    public void setTitulo(String Titulo) {
-        this.Titulo = Titulo;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getGenero() {
-        return Genero;
+        return genero;
     }
 
-    public void setGenero(String Genero) {
-        this.Genero = Genero;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public int getDuracion() {
-        return Duracion;
+        return duracion;
     }
 
-    public void setDuracion(int Duracion) {
-        this.Duracion = Duracion;
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
     public String getCategoria() {
-        return Categoria;
+        return categoria;
     }
 
-    public void setCategoria(String Categoria) {
-        this.Categoria = Categoria;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getDirector() {
-        return Director;
+        return director;
     }
 
-    public void setDirector(String Director) {
-        this.Director = Director;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public String getPoster() {
-        return Poster;
+        return poster;
     }
 
-    public void setPoster(String Poster) {
-        this.Poster = Poster;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

@@ -14,7 +14,6 @@ public class ClienteRepository {
         conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
-   
     public int crear(String nombre, String correo) {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Crear_Cliente(?,?)}")) {

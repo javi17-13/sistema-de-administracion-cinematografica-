@@ -18,11 +18,8 @@ public class PeliculaRepository {
         conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
-    // Antes esto atrapaba el SQLException aqui mismo y devolvia
-    // true/false, y el Service nunca revisaba ese valor -- registrar
-    // una pelicula siempre decia "EXITO" aunque el guardado fallara.
-    // Ahora, igual que UsuarioRepository, se deja pasar la excepcion
-    // hacia arriba para que el Service se entere de verdad.
+    // Se dejan pasar las excepciones hacia arriba para que el Service
+    // gestione correctamente la respuesta en lugar de silenciarlas.
     public void agregar(Pelicula pelicula) {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Crear_Peliculas(?,?,?,?,?,?)}")) {
@@ -46,7 +43,7 @@ public class PeliculaRepository {
         try (CallableStatement callSP = conexion
                 .prepareCall("{call sp_Editar_Peliculas(?,?,?,?,?,?,?)}")) {
 
-            callSP.setInt(1, pelicula.getID_Pelicula());
+            callSP.setInt(1, pelicula.getIdPelicula());
             callSP.setString(2, pelicula.getTitulo());
             callSP.setString(3, pelicula.getGenero());
             callSP.setInt(4, pelicula.getDuracion());
@@ -102,9 +99,6 @@ public class PeliculaRepository {
         return null;
     }
 
-    // No hay procedimiento almacenado para esto, se usa una consulta
-    // directa. Antes el Service tenia estos metodos listos pero nunca
-    // los llamaba -- se podia registrar la misma pelicula dos veces.
     public boolean existeTitulo(String titulo) {
         String sql = "SELECT * FROM Peliculas WHERE Titulo = ?";
 
@@ -153,7 +147,7 @@ public class PeliculaRepository {
 
     private Pelicula mapearPelicula(ResultSet resultado) throws SQLException {
         Pelicula pelicula = new Pelicula();
-        pelicula.setID_Pelicula(resultado.getInt("ID_Pelicula"));
+        pelicula.setIdPelicula(resultado.getInt("ID_Pelicula"));
         pelicula.setTitulo(resultado.getString("Titulo"));
         pelicula.setGenero(resultado.getString("Genero"));
         pelicula.setDuracion(resultado.getInt("Duracion"));
