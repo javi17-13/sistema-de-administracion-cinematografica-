@@ -1,93 +1,113 @@
 package com.cineplex.system.service;
 
 import com.cineplex.system.model.Pelicula;
+import com.cineplex.system.model.ResultadoOperacion;
 import com.cineplex.system.repository.PeliculaRepository;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PeliculaService {
 
-    private PeliculaRepository peliculaRepository;
-
-    public PeliculaService() {
-        peliculaRepository = new PeliculaRepository();
-    }
+    private final PeliculaRepository peliculaRepo = new PeliculaRepository();
 
     public String validarDatos(Pelicula pelicula) {
-
+        if (pelicula == null) {
+            return "La película no puede ser nula.";
+        }
         if (pelicula.getTitulo() == null || pelicula.getTitulo().trim().isEmpty()) {
             return "El título es obligatorio.";
         }
-
         if (pelicula.getGenero() == null || pelicula.getGenero().trim().isEmpty()) {
             return "El género es obligatorio.";
         }
-
         if (pelicula.getCategoria() == null || pelicula.getCategoria().trim().isEmpty()) {
             return "La categoría es obligatoria.";
         }
-
         if (pelicula.getDirector() == null || pelicula.getDirector().trim().isEmpty()) {
             return "El director es obligatorio.";
         }
-
         if (pelicula.getPoster() == null || pelicula.getPoster().trim().isEmpty()) {
-            return "El poster es obligatorio.";
+            return "El póster es obligatorio.";
         }
-
         if (pelicula.getDuracion() <= 0) {
             return "La duración debe ser mayor que 0.";
         }
-
         return null;
     }
 
-    // Antes devolvía boolean. Ahora devuelve el mensaje de error (o null si se guardó bien),
-    // para que el controlador de la pantalla pueda mostrar por qué falló.
-    public String agregar(Pelicula pelicula) {
-
-        String error = validarDatos(pelicula);
-        if (error != null) {
-            return error;
+    public List<Pelicula> obtenerCartelera() {
+        try {
+            return peliculaRepo.listar();
+        } catch (RuntimeException e) {
+            return new ArrayList<>();
         }
-
-        if (peliculaRepository.existeTitulo(pelicula.getTitulo())) {
-            return "Ya existe una película con ese título.";
-        }
-
-        return peliculaRepository.agregar(pelicula)
-                ? null
-                : "No se pudo guardar la película. Intenta de nuevo.";
     }
 
     public List<Pelicula> listar() {
-        return peliculaRepository.listar();
+        return obtenerCartelera();
     }
 
-    // Antes devolvía boolean. Ahora devuelve el mensaje de error (o null si se editó bien).
-    public String editar(Pelicula pelicula) {
-
-        String error = validarDatos(pelicula);
-        if (error != null) {
-            return error;
-        }
-
-        if (peliculaRepository.existeTituloExceptoId(
-                pelicula.getTitulo(),
-                pelicula.getIdPelicula())) {
-            return "Ya existe otra película con ese título.";
-        }
-
-        return peliculaRepository.editar(pelicula)
-                ? null
-                : "No se pudo editar la película. Intenta de nuevo.";
+    public Pelicula buscarPorId(int idPelicula) {
+        return peliculaRepo.buscarPorId(idPelicula);
     }
 
-    public boolean eliminar(int idPelicula) {
+    public ResultadoOperacion registrar(Pelicula pelicula) {
+        String errorValidacion = validarDatos(pelicula);
+        if (errorValidacion != null) {
+            return ResultadoOperacion.ERROR;
+        }
 
+        if (peliculaRepo.existeTitulo(pelicula.getTitulo())) {
+            return ResultadoOperacion.TITULO_DUPLICADO;
+        }
+
+        try {
+            peliculaRepo.agregar(pelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            return traducirError(e);
+        }
+    }
+
+    public ResultadoOperacion editar(Pelicula pelicula) {
+        String errorValidacion = validarDatos(pelicula);
+        if (errorValidacion != null) {
+            return ResultadoOperacion.ERROR;
+        }
+
+        if (peliculaRepo.existeTituloExceptoId(pelicula.getTitulo(), pelicula.getIdPelicula())) {
+            return ResultadoOperacion.TITULO_DUPLICADO;
+        }
+
+        try {
+            peliculaRepo.editar(pelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            return traducirError(e);
+        }
+    }
+
+    public ResultadoOperacion eliminar(int idPelicula) {
         if (idPelicula <= 0) {
-            return false;
+            return ResultadoOperacion.ERROR;
         }
 
-        return peliculaRepository.eliminar(idPelicula);
+        try {
+            peliculaRepo.eliminar(idPelicula);
+            return ResultadoOperacion.EXITO;
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                return ResultadoOperacion.REGISTRO_EN_USO;
+            }
+            return ResultadoOperacion.ERROR;
+        }
+    }
+
+    private ResultadoOperacion traducirError(RuntimeException e) {
+        if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+            return ResultadoOperacion.TITULO_DUPLICADO;
+        }
+        return ResultadoOperacion.ERROR;
     }
 }

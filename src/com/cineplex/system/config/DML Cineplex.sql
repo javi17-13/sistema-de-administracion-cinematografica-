@@ -142,3 +142,18 @@ CALL sp_Editar_Peliculas();
 CALL sp_Eliminar_Peliculas();
 CALL sp_Buscar_Peliculas();
 
+
+select * from usuarios;
+select * from peliculas;
+select * from funciones;
+
+SELECT ID_Pelicula, Titulo
+FROM Peliculas;
+SELECT ID_Sala, Nombre
+FROM Salas;
+
+INSERT INTO Funciones
+(ID_Pelicula, ID_Sala, Fecha, Hora, Precio)
+VALUES
+(1, 1, '2026-09-25', '19:00:00', 35.00);
+

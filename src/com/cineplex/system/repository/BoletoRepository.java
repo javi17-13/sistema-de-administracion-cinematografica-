@@ -11,7 +11,7 @@ public class BoletoRepository {
     private Connection conexion;
 
     public BoletoRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
     public int crear(int idFuncion, int idCliente, String asiento, String contenidoQR) {
@@ -21,6 +21,7 @@ public class BoletoRepository {
             callSP.setInt(2, idCliente);
             callSP.setString(3, asiento);
             callSP.setString(4, contenidoQR);
+            
             try (ResultSet resultado = callSP.executeQuery()) {
                 if (resultado.next()) {
                     return resultado.getInt("ID_Boleto");
@@ -30,6 +31,6 @@ public class BoletoRepository {
             System.out.println("Error al crear el boleto: " + e.getMessage());
             throw new RuntimeException(e);
         }
-        throw new RuntimeException("No se pudo obtener el ID del boleto recien creado.");
+        throw new RuntimeException("No se pudo obtener el ID del boleto recién creado.");
     }
 }

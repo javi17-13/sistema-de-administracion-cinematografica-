@@ -10,6 +10,22 @@ public class Pelicula {
     private String director;
     private String poster;
 
+    // Constructor vacío
+    public Pelicula() {
+    }
+
+    // Constructor con parámetros
+    public Pelicula(int idPelicula, String titulo, String genero, int duracion, String categoria, String director, String poster) {
+        this.idPelicula = idPelicula;
+        this.titulo = titulo;
+        this.genero = genero;
+        this.duracion = duracion;
+        this.categoria = categoria;
+        this.director = director;
+        this.poster = poster;
+    }
+
+    // Getters y Setters
     public int getIdPelicula() {
         return idPelicula;
     }
@@ -65,5 +81,4 @@ public class Pelicula {
     public void setPoster(String poster) {
         this.poster = poster;
     }
-
 }

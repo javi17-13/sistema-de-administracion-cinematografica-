@@ -19,17 +19,10 @@
             <Label styleClass="header-titulo" text="CINEPLEX" />
             <Region HBox.hgrow="ALWAYS" />
             <Label fx:id="lblUsuario" styleClass="header-usuario" text="Administrador: -" />
-            <Button mnemonicParsing="false" onMouseClicked="#onCerrarSesion" styleClass="boton-cerrar-sesion" text="Cerrar sesión" />
+            <Button mnemonicParsing="false" onAction="#onCerrarSesion" styleClass="boton-cerrar-sesion" text="Cerrar sesión" />
          </children>
       </HBox>
    </top>
-   <center>
-      <StackPane styleClass="area-central" BorderPane.alignment="CENTER">
-         <children>
-            <Label styleClass="mensaje-central" text="Sesión iniciada correctamente. Aquí irá la administración de cartelera, salas y boletos." wrapText="true" />
-         </children>
-      </StackPane>
-   </center>
    <left>
       <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" styleClass="menu-lateral" BorderPane.alignment="CENTER">
          <padding>
@@ -45,4 +38,11 @@
          </children>
       </VBox>
    </left>
+   <center>
+      <StackPane styleClass="area-central" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="mensaje-central" text="Sesión iniciada correctamente. Aquí irá la administración de cartelera, salas y boletos." wrapText="true" />
+         </children>
+      </StackPane>
+   </center>
 </BorderPane>

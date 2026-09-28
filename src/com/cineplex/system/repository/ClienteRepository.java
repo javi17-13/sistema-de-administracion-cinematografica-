@@ -11,7 +11,7 @@ public class ClienteRepository {
     private Connection conexion;
 
     public ClienteRepository() {
-        conexion = ConexionDB.getConnection();
+        conexion = ConexionDB.getInstanciaConexionDB().getConnection();
     }
 
     public int crear(String nombre, String correo) {
