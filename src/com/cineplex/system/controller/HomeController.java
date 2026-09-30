@@ -2,11 +2,11 @@ package com.cineplex.system.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import com.cineplex.system.utils.AlertInformation;
 import com.cineplex.system.utils.Roles;
 import com.cineplex.system.utils.Session;
@@ -29,6 +29,8 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnCompraBoletos;
 
+    
+
     private final AlertInformation alertInfo = new AlertInformation();
 
     @Override
@@ -36,18 +38,18 @@ public class HomeController implements Initializable {
         String rol = Session.getRolActual();
         lblUsuario.setText(rol + ": " + Session.getUsuarioActual());
 
-        // Cada boton se habilita SOLO si el rol actual tiene permiso sobre
-        // ese modulo (ver Roles.java). Esta es la primera barrera (visual);
-        // cada pantalla de destino valida otra vez por su cuenta (segunda
-        // barrera), por si alguien llega ahi sin pasar por este boton.
+        // Deshabilitar botones visualmente según el rol
         btnCartelera.setDisable(!Roles.puedeVerCartelera(rol));
         btnRegistrarPelicula.setDisable(!Roles.puedeRegistrarPelicula(rol));
         btnAdministradores.setDisable(!Roles.puedeGestionarAdministradores(rol));
         btnCompraBoletos.setDisable(!Roles.puedeComprarBoletos(rol));
+        btnRegistrarPelicula.setDisable(!Roles.puedeRegistrarPelicula(rol));
     }
 
+    // --- Métodos de navegación del menú ---
+
     @FXML
-    public void onIrCartelera(MouseEvent event) {
+    public void abrirCartelera(ActionEvent event) {
         if (!Roles.puedeVerCartelera(Session.getRolActual())) {
             alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
                     "Solo el Administrador de Cine puede acceder a la cartelera.");
@@ -57,19 +59,18 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    public void onIrRegistrarPelicula(MouseEvent event) {
+    public void abrirRegistrarPelicula(ActionEvent event) {
         if (!Roles.puedeRegistrarPelicula(Session.getRolActual())) {
             alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
                     "Solo el Administrador o el Administrador de Cine pueden registrar películas.");
             return;
         }
-        // Se limpia cualquier edicion anterior para que abra en modo registro
         RegistrarPeliculaController.prepararRegistro();
         new ViewFactory().viewRegistrarPelicula();
     }
 
     @FXML
-    public void onIrAdministradores(MouseEvent event) {
+    public void abrirAdministradores(ActionEvent event) {
         if (!Roles.puedeGestionarAdministradores(Session.getRolActual())) {
             alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
                     "Solo el Administrador de Cine puede administrar cuentas.");
@@ -79,7 +80,7 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    public void onIrCompraBoletos(MouseEvent event) {
+    public void abrirCompraBoletos(ActionEvent event) {
         if (!Roles.puedeComprarBoletos(Session.getRolActual())) {
             alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
                     "Solo el Gerente o el Administrador de Cine pueden emitir boletos.");
@@ -89,11 +90,21 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    public void onCerrarSesion(MouseEvent event) {
-        Session.cerrarSesion();
+    public void abrirPeliculas(ActionEvent event) {
+        if (!Roles.puedeRegistrarPelicula(Session.getRolActual())) {
+            alertInfo.viewAlert("WARNING", "ACCESO DENEGADO", "MÓDULO EXCLUSIVO",
+                    "Solo el Administrador o el Administrador de Cine pueden registrar películas.");
+            return;
+        }
+        RegistrarPeliculaController.prepararRegistro();
+        new ViewFactory().viewRegistrarPelicula();
+    }
 
-        ViewFactory viewFactory = new ViewFactory();
-        viewFactory.viewLogin();
+    
+
+    @FXML
+    public void onCerrarSesion(ActionEvent event) {
+        Session.cerrarSesion();
+        new ViewFactory().viewLogin();
     }
 }
-

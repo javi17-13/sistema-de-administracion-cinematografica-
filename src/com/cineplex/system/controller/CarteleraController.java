@@ -215,7 +215,7 @@ public class CarteleraController implements Initializable {
             return;
         }
  
-        ResultadoOperacion resultado = peliculaService.eliminar(seleccionada.getID_Pelicula());
+        ResultadoOperacion resultado = peliculaService.eliminar(seleccionada.getIdPelicula());
         if (resultado == ResultadoOperacion.EXITO) {
             alertInfo.viewAlert("INFORMATION", "PELÍCULA ELIMINADA", "LISTO",
                     "\"" + seleccionada.getTitulo() + "\" se quitó de la cartelera.");

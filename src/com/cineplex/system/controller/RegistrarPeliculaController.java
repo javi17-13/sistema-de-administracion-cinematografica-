@@ -164,7 +164,7 @@ public class RegistrarPeliculaController implements Initializable {
         boolean esEdicion = peliculaEnEdicion != null;
         ResultadoOperacion resultado;
         if (esEdicion) {
-            pelicula.setID_Pelicula(peliculaEnEdicion.getID_Pelicula());
+            pelicula.setIdPelicula(peliculaEnEdicion.getIdPelicula());
             resultado = peliculaService.editar(pelicula);
         } else {
             resultado = peliculaService.registrar(pelicula);

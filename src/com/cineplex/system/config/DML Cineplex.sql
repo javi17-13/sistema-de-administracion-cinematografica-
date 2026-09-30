@@ -128,7 +128,12 @@ DELIMITER ;
 
 #USUARIOS
 
-CALL sp_Crear_Usuarios();
+
+CALL sp_Crear_Usuarios('Carlos Mendoza', 'cmendoza', 'Admin2026!', 'Administrador');
+
+CALL sp_Crear_Usuarios('Ana López', 'alopez', 'CineAdmin123', 'Administrador de Cine');
+
+CALL sp_Crear_Usuarios('Javier Ruiz', 'jruiz', 'GerentePass2026', 'Gerente');
 CALL sp_Leer_Usuarios();
 CALL sp_Editar_Usuarios();
 CALL sp_Eliminar_Usuarios();
