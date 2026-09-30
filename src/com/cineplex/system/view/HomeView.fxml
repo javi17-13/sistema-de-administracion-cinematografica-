@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="860.0" stylesheets="@styles/HomeStyles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cineplex.system.controller.HomeController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="12.0" styleClass="header">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <children>
+            <Label styleClass="header-titulo" text="CINEPLEX" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblUsuario" styleClass="header-usuario" text="Administrador: -" />
+            <Button mnemonicParsing="false" onAction="#onCerrarSesion" styleClass="boton-cerrar-sesion" text="Cerrar sesión" />
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" styleClass="menu-lateral" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="20.0" left="16.0" right="16.0" top="20.0" />
+         </padding>
+         <children>
+            <Button fx:id="btnCartelera" maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirCartelera" styleClass="menu-button" text="Cartelera" />
+            <Button fx:id="btnRegistrarPelicula" maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirRegistrarPelicula" styleClass="menu-button" text="Registrar película" />
+            <Button fx:id="btnAdministradores" maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirAdministradores" styleClass="menu-button" text="Administradores" />
+            <Button fx:id="btnCompraBoletos" maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirCompraBoletos" styleClass="menu-button" text="Compra de boletos" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <StackPane styleClass="area-central" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="mensaje-central" text="Sesión iniciada correctamente. Aquí irá la administración de cartelera, salas y boletos." wrapText="true" />
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
